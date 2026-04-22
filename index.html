@@ -1,5 +1,34 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
 <style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 2rem; background: #fff; }
+  .intro-section { max-width: 1000px; margin: 0 auto 4rem auto; }
+  .intro-title { font-size: 28px; font-weight: 700; margin-bottom: 1.5rem; color: #111; }
+  .intro-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 20px; padding-bottom: 20px; margin-bottom: 2rem; scrollbar-width: thin; scrollbar-color: #ddd transparent; }
+  .intro-slider::-webkit-scrollbar { height: 8px; }
+  .intro-slider::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
+  .slider-item { flex: 0 0 auto; scroll-snap-align: start; width: 280px; border-radius: 20px; overflow: hidden; border: 1px solid #eaeaea; box-shadow: 0 8px 24px rgba(0,0,0,0.06); background: #000; }
+  .slider-item img { width: 100%; height: auto; display: block; border-radius: 20px; }
+  .intro-text { font-size: 16px; line-height: 1.7; color: #444; }
+  .intro-text p { margin-bottom: 1.2rem; }
+  .intro-text strong { color: #111; font-weight: 600; }
+  .intro-text em { font-style: italic; color: #222; }
+  .violated-principle-box { background: #fff4f4; border-left: 4px solid #d93025; padding: 20px 24px; border-radius: 0 12px 12px 0; margin-top: 2.5rem; }
+  .violated-principle-box h3 { font-size: 18px; font-weight: 700; color: #b31412; margin: 0 0 12px 0; }
+  .violated-principle-box p { margin-bottom: 1rem; color: #222; font-size: 15px; }
+  .violated-principle-box ul { margin: 0; padding-left: 20px; color: #444; }
+  .violated-principle-box li { margin-bottom: 10px; font-size: 15px; line-height: 1.6; }
+  .principles-section { max-width: 1000px; margin: 0 auto 4rem auto; }
+  .principles-title { font-size: 28px; font-weight: 700; margin-bottom: 2rem; color: #111; text-transform: capitalize; }
+  .principles-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 2rem; }
+  .principles-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px; margin-bottom: 1rem; }
+  .principle-card { background: #fafafa; border-radius: 16px; padding: 24px; border: 1px solid #eaeaea; }
+  .principle-card h3 { font-size: 16px; font-weight: 600; color: #111; margin: 0 0 12px 0; }
+  .principle-card p { font-size: 15px; line-height: 1.6; color: #444; margin: 0; }
   .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem; }
   .tab { padding: 7px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; font-size: 13px; font-weight: 400; color: var(--color-text-secondary); cursor: pointer; transition: all 0.15s; }
   .tab:hover { background: var(--color-background-secondary); }
@@ -29,10 +58,80 @@
   .iphone-content img { width: 100%; display: block; height: auto; }
 </style>
 
-<div class="layout-wrapper">
+<div class="intro-section">
+  <h2 class="intro-title">what we have and why it doesn't work</h2>
+  <div class="intro-slider">
+    <div class="slider-item"><img src="now-01.png" alt="Current Design 01"></div>
+    <div class="slider-item"><img src="now-02.png" alt="Current Design 02"></div>
+    <div class="slider-item"><img src="now-03.png" alt="Current Design 03"></div>
+    <div class="slider-item"><img src="now-04.png" alt="Current Design 04"></div>
+    <div class="slider-item"><img src="now-05.png" alt="Current Design 05"></div>
+    <div class="slider-item"><img src="now-06.png" alt="Current Design 06"></div>
+    <div class="slider-item"><img src="now-07.png" alt="Current Design 07"></div>
+    <div class="slider-item"><img src="now-08.png" alt="Current Design 08"></div>
+    <div class="slider-item"><img src="now-09.png" alt="Current Design 09"></div>
+    <div class="slider-item"><img src="now-10.png" alt="Current Design 10"></div>
+    <div class="slider-item"><img src="now-11.png" alt="Current Design 11"></div>
+    <div class="slider-item"><img src="now-12.png" alt="Current Design 12"></div>
+  </div>
+  <div class="intro-text">
+    <p>we are expriencing a <strong>structural cognitive tax</strong> baked into the design. That's the most damning kind, because environmental factors can't be blamed. When a fully-engaged user with no distractions takes minutes longer than necessary, the friction isn't coming from interruptions or learning curves — it's coming from the design forcing unnecessary cognitive work at every decision point.</p>
+    <p>The user isn't confused or lazy. The UI is making them do work they shouldn't be doing (it should be doing it for them or the request should come after the initial reward). This is almost entirely a failure of our <strong>Principle 2: Cognitive Load & Comprehension</strong> — specifically the "mean time to understanding".</p>
+    <p>But it's compounding across multiple screens. For example, even after we go through the login screen, dashboard presents competing information blocks with identical visual weight. A fully-engaged user still has to <em>actively scan and parse</em> to find what they should act on next. There's no dominant focal point. The user is essentially running a visual search task every time they land here.</p>
+    <p>In the redesign, if a single priority action is surfaced at the top, that scanning cost collapses. This alone likely accounts for a significant chunk of wasted effort on the app as it's a screen users return to repeatedly. What this metric exposes is a violation of <strong>Hick's Law</strong> operating at an <em>app level</em>.</p>
+    <p>Each individual screen may seem manageable. But when every screen in the sequence requires active parsing instead of guided action, the cognitive debt compounds without a reward release mechanism. By the time the user reaches the end, they're already carrying the cognitive residue of half a dozen under-resolved decisions. Even worse, they have no immediate satisfaction after the ad was submitted.</p>
+    
+    <div class="violated-principle-box">
+      <h3>Violated Principle: Cognitive Load & Comprehension</h3>
+      <p><strong>Core Driver:</strong> Human processing power is a finite resource. Design must act as a filter, not a floodgate. The goal is to reduce the "mean time to understanding."</p>
+      <ul>
+        <li><strong>Terminology Clarity:</strong> Eliminate internal jargon. Use industry-standard or natural language that aligns with the user's mental model. If a user has to "learn" a word to use a button, the system has failed.</li>
+        <li><strong>Information Density:</strong> Apply the "Signal-to-Noise" ratio. Only surface data required for the immediate decision. Over-saturation leads to decision paralysis and user fatigue.</li>
+        <li><strong>Explicit Upfront Requirements:</strong> Never hide the "cost" of an action (time, effort, or data). Tell the user what they need before they start a process to prevent mid-task abandonment.</li>
+        <li><strong>Frictionless Choice Architecture:</strong> Limit options at critical decision points. Use "Hick’s Law" to guide users toward the most logical next step without overwhelming them with secondary features.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="principles-section">
+  <h2 class="principles-title">design principle and philosophy</h2>
+  
+  <div class="principles-grid-3">
+    <div class="principle-card">
+      <h3>Our Convictions</h3>
+      <p>We believe your attention is your most valuable asset. Human focus is a limited resource, and digital tools must respect it, not exploit it. We base every design decision on hard data and real-world testing—rejecting "design by committee" in favor of proven evidence. We believe that if an interface is beautiful, it is more reliable; aesthetics are the foundation of brand trust.</p>
+    </div>
+    <div class="principle-card">
+      <h3>Our Creation</h3>
+      <p>We build precision environments, not just software. We are developing a dual-track ecosystem: a high-transparency growth engine for enterprise brands and an elite, distraction-free "Lifestyle Club" for Creator-CEOs. Our interfaces act as filters, not floodgates—stripping away corporate noise and replaced with a natural flow that makes the right choice the easiest one to make.</p>
+    </div>
+    <div class="principle-card">
+      <h3>Our Vision</h3>
+      <p>We aim to close the gap between effort and earnings. By making the path from action to reward undeniable, we remove the mental weight of complex workflows. Our goal is to transform standard digital tasks into immersive, high-end experiences that command absolute trust and redefine what is possible in the creator economy.</p>
+    </div>
+  </div>
+
+  <div class="principles-grid-2">
+    <div class="principle-card">
+      <h3>Principle 1. Signal Over Noise</h3>
+      <p>We must drastically reduce the user's "mean time to understanding" by eliminating confusing internal jargon and managing information density. By explicitly stating all requirements upfront and leveraging frictionless choice architecture (Hick’s Law), we guide users to their next logical step without overwhelming them with decision paralysis.</p>
+    </div>
+    <div class="principle-card">
+      <h3>Principle 2. The Club</h3>
+      <p>We actively run away from the boring, flat "spreadsheet" or "HR tool" look. Instead, we design an elite workspace using deep dark UI, Apple's "liquid glass" effects, variable opacity, and depth of field. Our interface should not feel like a B2B SaaS product; it must feel like an exclusive, sophisticated gallery tailored for the modern Creator-CEO.</p>
+    </div>
+  </div>
+</div>
+
+<div class="layout-wrapper" style="margin-top: 2rem;">
   <div class="data-column">
     <div style="padding: 1rem 0;">
+      <h2 class="principles-title">Directions</h2>
       <div class="tabs" id="tabs"></div>
+      <div style="background: #fafafa; border: 1px solid #eaeaea; border-radius: 12px; padding: 20px; font-size: 15px; line-height: 1.6; color: #444; margin: 1rem 0 2rem 0;">
+        You might notice how all the home pages within the UI I initially shared have a very distinct <strong>#1 priority</strong> – that is done precisely to reduce user's effort and close the effort to earnings gap to match the vision outlined above. Bridging the <strong>"Effort-to-Earnings" Gap</strong> by explicitly visualizing the path from action to reward is another critical point of my work as we try to make the design of our apps purposeful to maintain high-integrity engagement.
+      </div>
       <div class="persona-meta" id="meta"></div>
       <div id="top-adjectives" class="top-adjectives"></div>
       <div id="chart-area"></div>
@@ -48,13 +147,39 @@
   </div>
 </div>
 
+<div class="principles-section" style="margin-top: 4rem;">
+  <h2 class="principles-title">what we should do next to improve further</h2>
+  <div class="intro-slider">
+    <div class="slider-item"><img src="next-01.png" alt="Next Improvement 01"></div>
+    <div class="slider-item"><img src="next-02.png" alt="Next Improvement 02"></div>
+    <div class="slider-item"><img src="next-03.png" alt="Next Improvement 03"></div>
+    <div class="slider-item"><img src="next-04.png" alt="Next Improvement 04"></div>
+    <div class="slider-item"><img src="next-05.png" alt="Next Improvement 05"></div>
+    <div class="slider-item"><img src="next-06.png" alt="Next Improvement 06"></div>
+  </div>
+
+  <div class="intro-text" style="max-width: 1000px; margin-top: 1rem;">
+    <h3 style="font-size: 20px; font-weight: 700; color: #111; margin-bottom: 1rem;">MoonTech Influencer Redesign Stories – Consolidated Overview</h3>
+    <p>These three stories form a coherent acquisition-to-retention flywheel that attacks three distinct failure points simultaneously.</p>
+    
+    <p><strong>Guest Mode</strong> inverts the current trust equation. Right now users are asked to pay a cost — phone number, social platform access — before receiving a single unit of value. Guest Mode flips this by dropping users into a live campaign discovery experience first, letting them see real H&M and Adidas campaigns and potential earnings before any registration prompt. The gate moves to payout, which is the only moment where identity verification is actually necessary for compliance reasons anyway. Users who arrive at the registration screen having already experienced the product are qualitatively different – they're already convinced, already self-selected as high-intent. That's not a quantitative tweak to conversion; it's a different user arriving at the form.</p>
+    
+    <p><strong>Link-Only Ad Closure</strong> eliminates the bottleneck responsible for the 18.6% task completion rate. The current flow inserts alien labor into a creator's natural workflow — export video, upload it again, write a script describing content you just filmed. The URL approach meets influencers in their native environment instead: create, post, paste link, done. This matches their existing mental model exactly. Critically, the dropout points aren't being optimized — they're being removed entirely, which is the correct intervention. Completed ads mean brands see results, brands renew, campaign inventory grows, which makes the Guest Mode experience more compelling. This story is load-bearing for the entire business model.</p>
+    
+    <p><strong>Waitlist + Platform-as-First-Ad</strong> solves three problems that typically require separate initiatives. It sidesteps the cold start problem by ensuring the platform can always run a campaign for itself regardless of brand inventory levels. It converts acquisition spend into product engagement — instead of money going to ads users ignore, it flows through the product as a live campaign where the user earns on day one. And the waitlist mechanic makes the "exclusive club" aesthetic a felt reality rather than just a visual claim, which drives the referral behavior that premium products depend on for organic growth.</p>
+
+    <h3 style="font-size: 20px; font-weight: 700; color: #111; margin: 2rem 0 1rem 0;">How the Three Stories Interact</h3>
+    <p>These stories are most powerful understood as a system rather than three separate fixes:</p>
+    <p>The waitlist creates desire before the user is even inside the product. Guest Mode delivers on that desire immediately with zero friction, showing them the opportunity. The platform-as-first-ad converts that browsing moment into a live earning experience that validates the promise. Link-only closure makes completing that first ad frictionless, so the earning loop closes successfully. The user exits the first session having browsed real campaigns, earned real money, and experienced zero unnecessary friction.</p>
+    <p>That sequence is designed to produce a single emotional outcome: <em>"this is exactly what I hoped it would be and it was so quick."</em> That's the metric that drives everything else — NPS, retention, referral, brand campaign conversion. You're not fixing individual screens anymore. You're redesigning the emotional arc of the first user session.</p>
+  </div>
+</div>
+
 <script>
 const personas = [
-  { name: "Broadcaster",          key: 1, color: "#378ADD", bg: "#E6F1FB", textColor: "#185FA5" },
-  { name: "Product Reviewer",     key: 2, color: "#7F77DD", bg: "#EEEDFE", textColor: "#534AB7" },
-  { name: "Trend Enthusiast",     key: 3, color: "#BA7517", bg: "#FAEEDA", textColor: "#854F0B" },
   { name: "Authentic Storyteller", key: 0, color: "#D85A30", bg: "#FAECE7", textColor: "#993C1D" },
   { name: "Visual Curator",       key: 4, color: "#1D9E75", bg: "#E1F5EE", textColor: "#0F6E56" },
+  { name: "Broadcaster",          key: 1, color: "#378ADD", bg: "#E6F1FB", textColor: "#185FA5" },
 ];
 
 const data = [
@@ -98,7 +223,7 @@ function render() {
   const p = personas[activePersona];
   const col = p.key;
 
-  let rows = data.map(r => ({ label: r[0], val: r[col + 1] }));
+  let rows = data.map(r => ({ label: r[0], val: r[col + 1] })).filter(r => r.val >= 30);
   const sortedByPct = [...rows].sort((a, b) => b.val - a.val);
   
   if (sortMode === "pct") rows = [...sortedByPct];
@@ -107,8 +232,6 @@ function render() {
   const vals = rows.map(r => r.val);
   const avg = Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
   const top = sortedByPct[0];
-  const topFive = sortedByPct.slice(0, 5);
-
   document.getElementById("meta").innerHTML = `
     <div class="meta-card">
       <div class="meta-label">Strongest trait</div>
@@ -116,19 +239,11 @@ function render() {
     </div>
   `;
 
-  document.getElementById("top-adjectives").innerHTML = `
-    <span class="top-adjectives-label">Top 5:</span>
-    ${topFive.map(r => `<span class="top-adj-tag" style="background:${p.bg};color:${p.textColor};border-color:${p.color};">${r.label}</span>`).join("")}
-  `;
+  document.getElementById("top-adjectives").style.display = "none";
 
+  document.getElementById("chart-area").className = "top-adjectives";
   document.getElementById("chart-area").innerHTML = rows.map(r => `
-    <div class="bar-row">
-      <div class="bar-label">${r.label}</div>
-      <div class="bar-track">
-        <div class="bar-fill" style="width:${r.val}%;background:${p.color};"></div>
-      </div>
-      <div class="bar-pct" style="color:${p.textColor}">${r.val}%</div>
-    </div>
+    <span class="top-adj-tag" style="background:${p.bg};color:${p.textColor};border-color:${p.color};font-size:13px;padding:6px 14px;">${r.label}</span>
   `).join("");
   document.getElementById("persona-img").src = `persona_${p.key}.png`;
 }
@@ -152,3 +267,5 @@ function switchTab(i) {
 buildTabs();
 render();
 </script>
+</body>
+</html>
