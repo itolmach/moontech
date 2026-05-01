@@ -3,21 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>May 1st Sprint | Overarching Prototype</title>
+    <title>May 1st Sprint | Strategic Architecture</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-deep: #050505;
-            --bg-card: rgba(20, 20, 20, 0.6);
-            --border-glass: rgba(255, 255, 255, 0.08);
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --accent-glow: rgba(255, 255, 255, 0.03);
-            --accent-primary: #ffffff;
-            --accent-muted: #444;
-            --glass-blur: blur(20px);
+            --bg-white: #ffffff;
+            --bg-surface: #fafafa;
+            --border-light: #eaeaea;
+            --text-main: #111111;
+            --text-muted: #444444;
+            --text-secondary: #666666;
+            --accent-primary: #3E278D;
+            --accent-light: #f4f2f8;
+            --accent-violation: #fff4f4;
+            --border-violation: #d93025;
+            --text-violation: #b31412;
         }
 
         * {
@@ -27,261 +29,313 @@
         }
 
         body {
-            background-color: var(--bg-deep);
-            color: var(--text-primary);
+            background-color: var(--bg-white);
+            color: var(--text-muted);
             font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            overflow-x: hidden;
+            line-height: 1.7;
             -webkit-font-smoothing: antialiased;
         }
 
         h1, h2, h3 {
-            font-family: 'Outfit', sans-serif;
-            font-weight: 600;
+            font-family: 'Figtree', sans-serif;
+            color: var(--text-main);
             letter-spacing: -0.02em;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 4rem 2rem;
+            padding: 5rem 2rem;
         }
 
         header {
             margin-bottom: 5rem;
-            text-align: center;
         }
 
         .badge {
             display: inline-block;
-            padding: 0.5rem 1rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border-glass);
+            padding: 6px 12px;
+            background: var(--accent-light);
+            border: 1px solid var(--accent-primary);
             border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
             margin-bottom: 1.5rem;
-            backdrop-filter: var(--glass-blur);
         }
 
         h1 {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(180deg, #fff 0%, #888 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
         }
 
         .subtitle {
             font-size: 1.25rem;
             color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
+            max-width: 700px;
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 2rem;
-            margin-top: 4rem;
+        /* Sections */
+        .section {
+            margin-top: 6rem;
         }
 
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-glass);
-            border-radius: 24px;
-            padding: 2.5rem;
-            backdrop-filter: var(--glass-blur);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1), border-color 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-        }
-
-        .card-large { grid-column: span 8; }
-        .card-small { grid-column: span 4; }
-        .card-full { grid-column: span 12; }
-
-        .card-icon {
-            width: 48px;
-            height: 48px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--border-glass);
-        }
-
-        h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        p {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-        }
-
-        .priority-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #ff4d4d;
+        .section-title {
+            font-size: 28px;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Image Slider */
+        .intro-slider {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding-bottom: 20px;
+            margin-bottom: 2.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-light) transparent;
+        }
+
+        .intro-slider::-webkit-scrollbar { height: 6px; }
+        .intro-slider::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 4px; }
+
+        .slider-item {
+            flex: 0 0 auto;
+            width: 280px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            background: #000;
+        }
+
+        .slider-item img {
+            width: 100%;
+            height: auto;
             display: block;
         }
 
-        .feature-list {
+        /* Violation Box */
+        .violated-principle-box {
+            background: var(--accent-violation);
+            border-left: 4px solid var(--border-violation);
+            padding: 32px;
+            border-radius: 0 16px 16px 0;
+            margin-top: 3rem;
+        }
+
+        .violated-principle-box h3 {
+            font-size: 20px;
+            color: var(--text-violation);
+            margin-bottom: 12px;
+        }
+
+        .violated-principle-box p {
+            color: #111;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .violated-principle-box ul {
             list-style: none;
         }
 
-        .feature-list li {
-            padding-left: 1.5rem;
+        .violated-principle-box li {
+            padding-left: 24px;
             position: relative;
-            margin-bottom: 0.75rem;
-            font-size: 0.95rem;
-            color: var(--text-secondary);
+            margin-bottom: 12px;
+            font-size: 15px;
         }
 
-        .feature-list li::before {
-            content: '→';
+        .violated-principle-box li::before {
+            content: '•';
             position: absolute;
             left: 0;
-            color: var(--text-primary);
+            color: var(--border-violation);
+            font-weight: 900;
         }
 
-        .placeholder-box {
-            width: 100%;
-            height: 200px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px dashed var(--border-glass);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 2rem;
-            color: var(--accent-muted);
-            font-size: 0.8rem;
+        /* Principles Grid */
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .principle-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-light);
+            padding: 32px;
+            border-radius: 20px;
+        }
+
+        .principle-card h3 {
+            font-size: 18px;
+            margin-bottom: 1rem;
+        }
+
+        .nugget-label {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--accent-primary);
             text-transform: uppercase;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+            display: block;
         }
 
+        /* Footer */
         footer {
             margin-top: 8rem;
+            padding-top: 4rem;
+            border-top: 1px solid var(--border-light);
             text-align: center;
-            padding-bottom: 4rem;
+        }
+
+        .btn-launch {
+            display: inline-block;
+            background: var(--accent-primary);
+            color: white;
+            padding: 18px 48px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 10px 30px rgba(62, 39, 141, 0.2);
+        }
+
+        .btn-launch:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(62, 39, 141, 0.3);
         }
 
         .back-link {
+            display: block;
+            margin-top: 2rem;
             color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s ease;
+            font-size: 14px;
         }
 
-        .back-link:hover {
-            color: var(--text-primary);
-        }
-
-        @media (max-width: 1024px) {
-            .card-large, .card-small { grid-column: span 12; }
-            h1 { font-size: 3rem; }
+        hr {
+            border: 0;
+            height: 1px;
+            background: var(--border-light);
+            margin: 4rem 0;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="badge">MAY 1ST SPRINT CYCLE</div>
-            <h1>The Overarching Prototype</h1>
-            <p class="subtitle">Designing the acquisition-to-retention flywheel for Moontech influencers.</p>
+            <div class="badge">May 1st Strategic Vision</div>
+            <h1>The MoonTech Flywheel</h1>
+            <p class="subtitle">Closing the effort-to-earnings gap by redesigning the emotional arc of the creator experience.</p>
         </header>
 
-        <div class="grid">
-            <!-- Pillar 1: Guest Mode -->
-            <div class="card card-large">
-                <div class="card-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg>
-                </div>
-                <h3>Fluid Onboarding & Guest Mode</h3>
-                <p>Inverting the trust equation by providing value before asking for data. Delayed account creation ensures influencers reach the "reward" moment first.</p>
-                <ul class="feature-list">
-                    <li>Immediate campaign discovery for H&M, Adidas, etc.</li>
-                    <li>Transparent potential earnings visualized upfront.</li>
-                    <li>Registration gate moved to the payout stage only.</li>
+        <!-- Current State Analysis -->
+        <section class="section">
+            <h2 class="section-title">what we have and why it doesn't work</h2>
+            <div class="intro-slider">
+                <div class="slider-item"><img src="now-01.png" alt="Current Design 01"></div>
+                <div class="slider-item"><img src="now-02.png" alt="Current Design 02"></div>
+                <div class="slider-item"><img src="now-03.png" alt="Current Design 03"></div>
+                <div class="slider-item"><img src="now-04.png" alt="Current Design 04"></div>
+                <div class="slider-item"><img src="now-05.png" alt="Current Design 05"></div>
+                <div class="slider-item"><img src="now-06.png" alt="Current Design 06"></div>
+                <div class="slider-item"><img src="now-07.png" alt="Current Design 07"></div>
+                <div class="slider-item"><img src="now-08.png" alt="Current Design 08"></div>
+                <div class="slider-item"><img src="now-09.png" alt="Current Design 09"></div>
+                <div class="slider-item"><img src="now-10.png" alt="Current Design 10"></div>
+                <div class="slider-item"><img src="now-11.png" alt="Current Design 11"></div>
+                <div class="slider-item"><img src="now-12.png" alt="Current Design 12"></div>
+            </div>
+            
+            <p>we are expriencing a <strong>structural cognitive tax</strong> baked into the design. When a fully-engaged user with no distractions takes minutes longer than necessary, the friction isn't coming from interruptions — it's coming from the design forcing unnecessary cognitive work at every decision point.</p>
+            <p style="margin-top: 1.5rem;">The UI is making them do work they shouldn't be doing. Each screen in the sequence requires active parsing instead of guided action, and the cognitive debt compounds without a reward release mechanism.</p>
+
+            <div class="violated-principle-box">
+                <h3>Violated Principle: Cognitive Load & Comprehension</h3>
+                <p>Human processing power is a finite resource. Design must act as a filter, not a floodgate.</p>
+                <ul>
+                    <li><strong>Terminology Clarity:</strong> Eliminate internal jargon. Align with the user's mental model.</li>
+                    <li><strong>Information Density:</strong> Only surface data required for the immediate decision.</li>
+                    <li><strong>Explicit Upfront Requirements:</strong> Never hide the "cost" of an action (time, effort, or data).</li>
+                    <li><strong>Frictionless Choice Architecture:</strong> Use Hick's Law to guide toward the logical next step.</li>
                 </ul>
-                <div class="placeholder-box">Low-Fidelity Prototype Area</div>
             </div>
+        </section>
 
-            <div class="card card-small">
-                <span class="priority-label">#1 Priority</span>
-                <h3>Artifact Reaction</h3>
-                <p>Artifacts are what people react to. This prototype serves as the load-bearing pillar for this week's sprint.</p>
-                <div class="placeholder-box" style="height: 100px;">Internal Logic Node</div>
-            </div>
+        <hr>
 
-            <!-- Pillar 2: Motivation Loop -->
-            <div class="card card-full">
-                <div class="card-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <!-- The May 1st Diagnostics -->
+        <section class="section">
+            <h2 class="section-title">May 1st Sprint Diagnostic</h2>
+            <div class="principles-grid">
+                <div class="principle-card">
+                    <span class="nugget-label">I. The Entropy of 18.6%</span>
+                    <p>Only 930/5,000 ads closed. In a high-integrity system, this 81.4% drop-off represents systemic noise. The creator’s slacking is a rational economic calculation to preserve time.</p>
                 </div>
-                <div style="display: flex; gap: 4rem; align-items: flex-start; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 300px;">
-                        <h3>The Motivation Loop</h3>
-                        <p>Translating the scheduling pain point into an incentive-driven delivery system. Ensuring influencers deliver on time through clear communication.</p>
-                        <ul class="feature-list">
-                            <li>Real-time scheduling incentives and "on-time" bonuses.</li>
-                            <li>Contextual communication channels for brand-influencer alignment.</li>
-                            <li>Automated reminders tied to the emotional arc of the session.</li>
-                        </ul>
-                    </div>
-                    <div style="flex: 1; min-width: 300px;">
-                        <div class="placeholder-box" style="height: 250px;">Incentive Architecture Mockup</div>
-                    </div>
+                <div class="principle-card">
+                    <span class="nugget-label">II. Temporal Incoherence</span>
+                    <p>Moontech lacks the algorithmic enforcement that makes programmatic ads predictable. You cannot promise performance if the execution layer is decoupled from scheduling.</p>
+                </div>
+                <div class="principle-card">
+                    <span class="nugget-label">III. Risk & Friction Asymmetry</span>
+                    <p>Requiring scripts and double-uploads for unpaid tasks is a friction multiplier. When a task is speculative, the workflow must be near-zero friction to be viable.</p>
+                </div>
+                <div class="principle-card">
+                    <span class="nugget-label">IV. Human-in-the-Loop Debt</span>
+                    <p>Manual intervention is a sign of a broken protocol. Communication should be a function of architecture, not nagging. Chasing creators consumes absolute margin.</p>
+                </div>
+                <div class="principle-card">
+                    <span class="nugget-label">V. Epistemic Feedback</span>
+                    <p>The "weekend data blackout" destroys the creator's ability to correlate effort with earnings. Cybernetics requires a tight feedback loop for self-optimization.</p>
+                </div>
+                <div class="principle-card" style="background: var(--accent-primary); color: white;">
+                    <h3 style="color: white; margin-bottom: 8px;">The Goal</h3>
+                    <p style="opacity: 0.9;">Produce a single emotional outcome: <em>"This is exactly what I hoped it would be and it was so quick."</em></p>
                 </div>
             </div>
+        </section>
 
-            <!-- Pillar 3: Smart Vetting -->
-            <div class="card card-large">
-                <div class="card-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        <hr>
+
+        <!-- Future Improvements -->
+        <section class="section">
+            <h2 class="section-title">Strategic Solutions & Next Steps</h2>
+            <div class="intro-slider">
+                <div class="slider-item"><img src="next-01.png" alt="Next Improvement 01"></div>
+                <div class="slider-item"><img src="next-02.png" alt="Next Improvement 02"></div>
+                <div class="slider-item"><img src="next-03.png" alt="Next Improvement 03"></div>
+                <div class="slider-item"><img src="next-04.png" alt="Next Improvement 04"></div>
+                <div class="slider-item"><img src="next-05.png" alt="Next Improvement 05"></div>
+                <div class="slider-item"><img src="next-06.png" alt="Next Improvement 06"></div>
+            </div>
+
+            <div class="principles-grid">
+                <div>
+                    <h3 style="margin-bottom: 1rem;">1. Guest Mode</h3>
+                    <p style="font-size: 14px;">Inverts the current trust equation. users discover H&M and Adidas campaigns and potential earnings before any registration prompt. The gate moves to payout, where identity verification is actually required.</p>
                 </div>
-                <h3>Smart Vetting & Matching</h3>
-                <p>Social media vetting as a pre-requisite for high-tier campaign access. Matching the right creator to the right brand via "Moontech Matching".</p>
-                <ul class="feature-list">
-                    <li>One-tap social media vetting layer.</li>
-                    <li>AI-driven campaign matching based on persona traits.</li>
-                    <li>"Exclusive Club" waitlist mechanics to drive organic referral.</li>
-                </ul>
-                <div class="placeholder-box">Vetting Flow Diagram</div>
+                <div>
+                    <h3 style="margin-bottom: 1rem;">2. Link-Only Ad Closure</h3>
+                    <p style="font-size: 14px;">Meets influencers in their native environment: create, post, paste link, done. The dropout points are removed entirely rather than optimized. This matches their existing mental model exactly.</p>
+                </div>
+                <div>
+                    <h3 style="margin-bottom: 1rem;">3. Waitlist + Platform-Ad</h3>
+                    <p style="font-size: 14px;">Sidesteps the cold start problem by ensuring the platform can always run a campaign for itself. It converts acquisition spend into a live earning experience that validates the promise on day one.</p>
+                </div>
             </div>
-
-            <div class="card card-small">
-                <h3>Flywheel Goal</h3>
-                <p>Produce a single emotional outcome: <em>"This is exactly what I hoped it would be and it was so quick."</em></p>
-                <div class="placeholder-box" style="height: 150px;">Sentiment Tracking</div>
-            </div>
-        </div>
+        </section>
 
         <footer>
+            <a href="PrototypeViewer.html" class="btn-launch">Launch Prototype →</a>
             <a href="index.html" class="back-link">← Return to Main Dashboard</a>
         </footer>
     </div>

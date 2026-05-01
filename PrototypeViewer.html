@@ -696,9 +696,7 @@
             align-items: center;
             justify-content: center;
             padding: 24px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.4);
+            background: #f9f8fc;
             animation: fadeIn 0.4s ease;
         }
 
@@ -1066,49 +1064,93 @@
             transition: width 2s ease-out;
         }
 
-        /* Strategy Panel */
-        .strategy-panel {
+        /* Black Card & Retainer Styles */
+        .black-card-overlay {
             position: absolute;
             top: 0;
-            right: -360px;
-            width: 360px;
+            left: 0;
+            width: 100%;
             height: 100%;
-            background: #0a0a0a;
-            border-left: 1px solid rgba(255,255,255,0.1);
-            z-index: 1000;
-            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            overflow-y: auto;
-            padding: 40px 24px;
-            color: rgba(255,255,255,0.8);
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .strategy-panel.active {
-            right: 0;
-        }
-
-        .strategy-toggle {
-            position: absolute;
-            top: 20px;
-            right: -80px;
-            transform: translateX(-100px);
-            z-index: 1001;
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(20px);
+            z-index: 3000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            text-align: center;
             color: white;
-            padding: 8px 16px;
-            border-radius: 100px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
+            animation: fadeIn 0.8s ease forwards;
         }
-
-        .strategy-toggle:hover {
-            background: rgba(255,255,255,0.15);
-            border-color: rgba(255,255,255,0.3);
+        .digital-black-card {
+            width: 280px;
+            height: 440px;
+            background: linear-gradient(135deg, #111 0%, #000 100%);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 24px;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.05);
+            margin-bottom: 40px;
+            position: relative;
+            transform: translateY(-100vh);
+            transition: transform 1.2s cubic-bezier(0.17, 0.89, 0.32, 1.28);
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+            overflow: hidden;
+        }
+        .digital-black-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 0%, rgba(255,255,255,0.05) 50%, transparent 100%);
+            animation: metallicShine 4s infinite;
+        }
+        @keyframes metallicShine {
+            0% { transform: translateX(-100%) translateY(-100%); }
+            100% { transform: translateX(100%) translateY(100%); }
+        }
+        .swipe-to-sign-container {
+            width: 100%;
+            height: 60px;
+            background: #f1f1f1;
+            border-radius: 30px;
+            position: relative;
+            margin-top: 40px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+        .swipe-handle {
+            width: 52px;
+            height: 52px;
+            background: var(--color-primary-500);
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            left: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            z-index: 2;
+            box-shadow: 0 4px 12px rgba(62, 39, 141, 0.3);
+        }
+        .swipe-text {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #999;
+            z-index: 1;
+            pointer-events: none;
         }
 
         .nugget-title {
@@ -1126,46 +1168,7 @@
 <body>
 
     <div class="iphone-frame">
-        <button class="strategy-toggle" onclick="toggleStrategy()">Strategic Vision</button>
-        
-        <div id="strategy-panel" class="strategy-panel">
-            <h2 style="color: white; font-size: 24px; margin-bottom: 8px;">MoonTech Strategy</h2>
-            <div style="font-size: 12px; opacity: 0.5; margin-bottom: 32px;">May 1st Sprint Diagnostic</div>
-
-            <div class="nugget-title">I. The Entropy of 18.6%</div>
-            <p>Data indicates only 930/5,000 ads closed. In a high-integrity system, this 81.4% drop-off represents systemic noise. The creator’s "slacking" is a rational economic calculation to preserve time.</p>
-
-            <div class="nugget-title">II. Temporal Incoherence</div>
-            <p>Moontech lacks the algorithmic enforcement that makes programmatic ads predictable. You cannot promise "performance" if the execution layer is decoupled from the scheduling layer.</p>
-
-            <div class="nugget-title">III. Risk & Friction Asymmetry</div>
-            <p>Requiring scripts and double-uploads for unpaid tasks is a friction multiplier. When a task is speculative, the workflow must be near-zero friction to be viable.</p>
-
-            <div class="nugget-title">IV. Human-in-the-Loop Debt</div>
-            <p>Manual intervention is a sign of a broken protocol. Chasing creators irritates them and consumes margin. Communication should be a function of architecture, not nagging.</p>
-
-            <div class="nugget-title">V. Epistemic Feedback</div>
-            <p>The "weekend data blackout" destroys the creator's ability to correlate effort with earnings. Cybernetics requires a tight feedback loop for self-optimization.</p>
-
-            <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 40px 0;">
-
-            <div style="color: white; font-weight: 700; margin-bottom: 20px;">Strategic Solutions</div>
-            
-            <div style="margin-bottom: 24px;">
-                <b style="color: #a29bfe;">1. Velocity Multiplier:</b> Tiered commissions (48h = 15%). Urgency via positive reinforcement.
-            </div>
-            <div style="margin-bottom: 24px;">
-                <b style="color: #a29bfe;">2. Creator Streak:</b> Gamification for operational excellence. Tokens for "Trust" that unlock early access.
-            </div>
-            <div style="margin-bottom: 24px;">
-                <b style="color: #a29bfe;">3. Ambassador Fast-Track:</b> Reliability Score tracking. Automated "interview" for hybrid retainer contracts.
-            </div>
-            <div style="margin-bottom: 24px;">
-                <b style="color: #a29bfe;">4. Affiliate Downline:</b> Multi-level professional referrals with override bonuses.
-            </div>
-
-            <button class="btn-action-primary" style="background: rgba(255,255,255,0.05); color: white; margin-top: 40px;" onclick="toggleStrategy()">Close Panel</button>
-        </div>
+        <a href="May1.html" class="strategy-link">Strategic Vision</a>
 
         <div class="iphone-notch"></div>
         <div class="iphone-content">
@@ -1296,14 +1299,10 @@
                         </div>
                     </div>
 
-                    <div class="tabs-container">
-                        <div class="tab-btn active" onclick="switchTab('new')">New</div>
-                        <div class="tab-btn" onclick="switchTab('active')">Active</div>
-                        <div class="tab-btn" onclick="switchTab('closed')">Closed</div>
-                    </div>
 
-                    <!-- Velocity Trigger Card -->
-                    <div id="velocity-promo" class="velocity-trigger" onclick="navigateTo('screen-velocity-hook')">
+
+                    <!-- Velocity Trigger Card (Hidden until first submission) -->
+                    <div id="velocity-promo" class="velocity-trigger" style="display: none;" onclick="navigateTo('screen-velocity-hook')">
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; position: relative;">
                             <div>
                                 <div style="font-size: 11px; color: #a29bfe; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px;">VIP ACCESS</div>
@@ -1318,6 +1317,16 @@
                     </div>
 
                     <div id="campaign-list-new" class="campaign-list">
+
+                        <!-- One campaign rule banner -->
+                        <div style="background: #f4f2f8; border: 1.5px solid #e9e4f8; border-radius: 16px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; margin-bottom: 4px;">
+                            <div style="font-size: 20px; flex-shrink: 0;">☝️</div>
+                            <div>
+                                <div style="font-family: 'Figtree', sans-serif; font-weight: 700; font-size: 13px; color: #3E278D; margin-bottom: 2px;">Choose your first campaign wisely</div>
+                                <div style="font-size: 12px; color: #6c757d; line-height: 1.5;">You can only claim one campaign to start. Pick the brand that fits your personality best.</div>
+                            </div>
+                        </div>
+
                         <!-- H&M -->
                         <div class="campaign-card">
                             <div class="campaign-header">
@@ -1338,38 +1347,9 @@
                             </div>
                         </div>
 
-                        <!-- Active State Template (Hidden) -->
-                        <div id="active-campaign-hm" class="campaign-card" style="display: none;">
-                            <div class="campaign-header">
-                                <div class="brand-info">
-                                    <div class="brand-avatar" style="color: red; border-color: red;">H&M</div>
-                                    <div class="brand-name">H&M <span class="vip-badge" style="margin-left: 4px;">VIP</span></div>
-                                </div>
-                                <div class="timer-chip velocity-vip">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                                    47h 52m
-                                </div>
-                            </div>
-                            <div class="campaign-title" style="margin: 16px 0;">Sweet February! Enjoy your 20% disscount</div>
-                            
-                            <div style="background: #f8f9fa; border-radius: 12px; padding: 12px; margin-bottom: 16px;">
-                                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px;">
-                                    <span style="opacity: 0.6;">Current Reward</span>
-                                    <span style="color: #975a16; font-weight: 800;">15% Commission</span>
-                                </div>
-                                <div style="font-size: 10px; opacity: 0.4;">Drops to 10% in 47 hours</div>
-                            </div>
-
-                            <div class="campaign-footer" style="padding-top: 0;">
-                                <div style="font-size: 13px; font-weight: 600; color: var(--color-primary-500);">Awaiting Submission</div>
-                                <div class="btn-paste-icon" onclick="showSubmissionModal()">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Adidas -->
-                        <div class="campaign-card" onclick="navigateTo('screen-campaign-details')">
+                        <div class="campaign-card" id="card-adidas">
                             <div class="campaign-header">
                                 <div class="brand-info">
                                     <div class="brand-avatar" style="color: black; border-color: black;">
@@ -1382,19 +1362,16 @@
                                     <div class="tag tag-carousel">Carousel</div>
                                 </div>
                             </div>
-                            <div class="campaign-title">Sweet February! Enjoy your 20% disscount</div>
+                            <div class="campaign-title">Spring Sport Collection — Move with Purpose</div>
                             <div class="campaign-divider"></div>
                             <div class="campaign-footer">
                                 <div class="campaign-payout">Payout 15%</div>
-                                <div class="campaign-deadline">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                                    Apply by 5th Feb
-                                </div>
+                                <button class="btn-action-primary" style="width: auto; padding: 10px 24px; font-size: 14px;" onclick="claimCampaign(this)">Claim</button>
                             </div>
                         </div>
 
                         <!-- Boots -->
-                        <div class="campaign-card" onclick="navigateTo('screen-campaign-details')">
+                        <div class="campaign-card" id="card-boots">
                             <div class="campaign-header">
                                 <div class="brand-info">
                                     <div class="brand-avatar" style="color: #020a33;">Boots</div>
@@ -1404,19 +1381,16 @@
                                     <div class="tag tag-photopost">Photopost</div>
                                 </div>
                             </div>
-                            <div class="campaign-title">Sweet February! Enjoy your 20% disscount</div>
+                            <div class="campaign-title">Spring Beauty Edit — Your Glow, Your Way</div>
                             <div class="campaign-divider"></div>
                             <div class="campaign-footer">
-                                <div class="campaign-payout">Payout 15%</div>
-                                <div class="campaign-deadline">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                                    Apply by 5th Feb
-                                </div>
+                                <div class="campaign-payout">Payout 12%</div>
+                                <button class="btn-action-primary" style="width: auto; padding: 10px 24px; font-size: 14px;" onclick="claimCampaign(this)">Claim</button>
                             </div>
                         </div>
 
                         <!-- ALDO -->
-                        <div class="campaign-card" onclick="navigateTo('screen-campaign-details')">
+                        <div class="campaign-card" id="card-aldo">
                             <div class="campaign-header">
                                 <div class="brand-info">
                                     <div class="brand-avatar" style="color: black; border-color: black; background: black; color: white;">ALDO</div>
@@ -1428,14 +1402,11 @@
                                     <div class="tag tag-more">...</div>
                                 </div>
                             </div>
-                            <div class="campaign-title">Sweet February! Enjoy your 20% disscount</div>
+                            <div class="campaign-title">Step Into Summer — Footwear for Every Mood</div>
                             <div class="campaign-divider"></div>
                             <div class="campaign-footer">
-                                <div class="campaign-payout">Payout 15%</div>
-                                <div class="campaign-deadline">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                                    Apply by 5th Feb
-                                </div>
+                                <div class="campaign-payout">Payout 13%</div>
+                                <button class="btn-action-primary" style="width: auto; padding: 10px 24px; font-size: 14px;" onclick="claimCampaign(this)">Claim</button>
                             </div>
                         </div>
                     </div>
@@ -1567,6 +1538,37 @@
                 </div>
 
                 <div class="content">
+                    <!-- Reliability & Ambassador Overview -->
+                    <div style="background: #fdfdfd; border: 1px solid #eee; border-radius: 20px; padding: 20px; margin-bottom: 24px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <div class="ambassador-badge">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                                Level 1 Ambassador
+                            </div>
+                            <div style="font-size: 11px; color: #6c757d; font-weight: 600;">850 / 1000 XP</div>
+                        </div>
+                        
+                        <div style="font-size: 13px; font-weight: 600; color: #111; margin-bottom: 4px;">Reliability Score</div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="flex: 1; margin-right: 12px;">
+                                <div class="reliability-score-bar">
+                                    <div class="reliability-score-fill" id="reliability-fill" style="width: 65%;"></div>
+                                </div>
+                            </div>
+                            <div style="font-size: 13px; font-weight: 700; color: #4caf50;" id="reliability-val">65%</div>
+                        </div>
+                        <div style="font-size: 11px; color: #6c757d; margin-top: 8px;">Fast responses to team messages boost this score.</div>
+                    </div>
+
+                    <div class="v-token-balance">
+                        <div class="token-icon">V</div>
+                        <div style="flex: 1;">
+                            <div style="font-size: 11px; color: #6c757d; font-weight: 600;">MoonTech Currency</div>
+                            <div style="font-size: 18px; font-weight: 800; color: #111;"><span id="v-token-count">240</span> V-Tokens</div>
+                        </div>
+                        <div style="font-size: 11px; color: #a29bfe; font-weight: 700; cursor: pointer;">REDEEM</div>
+                    </div>
+
                     <h1 style="font-size: 22px; margin-bottom: 16px;">March 13, 2025</h1>
                     
                     <div class="stat-grid">
@@ -1600,6 +1602,9 @@
                     </div>
 
                     <div class="btn-outline">See more insights</div>
+
+                    <!-- Elite Simulation Trigger -->
+                    <button class="btn-action-primary" style="background: #111; color: white; margin-top: 24px; border: 1px solid rgba(255,255,255,0.1);" onclick="triggerEliteRetainer()">Simulate 3rd Ad Submission</button>
 
                     <div style="margin-top: 24px; display: flex; justify-content: space-between; align-items: center;">
                         <h3 style="font-size: 16px; font-weight: 700;">Earnings</h3>
@@ -1981,7 +1986,7 @@
                     </div>
                     <div class="reg-title">Setup Complete!</div>
                     <div class="reg-subtitle">You're all set to start exploring campaigns and earning.</div>
-                    <button class="btn-action-primary" style="margin-top: 40px;" onclick="navigateTo('screen-performance')">Go to Dashboard</button>
+                    <button class="btn-action-primary" style="margin-top: 40px;" onclick="unlockAndGoToCampaigns()">Browse Campaigns</button>
                 </div>
             </div>
 
@@ -2339,6 +2344,153 @@
                 </div>
             </div>
 
+            <!-- Screen 8: Operational Chat -->
+            <div id="screen-operational-chat" class="screen" style="background: white;">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+                <div class="top-bar" style="border-bottom: 1px solid #f5f5f5;">
+                    <button class="back-btn" onclick="navigateTo('screen-campaigns')">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="15" y1="9" x2="3" y2="9"></line><polyline points="9 15 3 9 9 3"></polyline></svg>
+                    </button>
+                    <div style="flex: 1; padding-left: 12px; display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 32px; height: 32px; background: #e9ecef; border-radius: 50%; overflow: hidden;">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div>
+                            <div style="font-size: 14px; font-weight: 700; color: #111;">Sarah</div>
+                            <div style="font-size: 10px; color: #4caf50; font-weight: 600;">Partnerships Team</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-container" id="chat-messages">
+                    <div class="chat-bubble received">
+                        Hey! We're reviewing your latest campaign performance. You're crushing it! 🚀
+                    </div>
+                    <div class="chat-bubble received">
+                        Quick question: are you available for a premium ALDO collaboration next Tuesday? We need a reliable partner for a primary drop.
+                    </div>
+                </div>
+                <div class="actions" id="chat-actions" style="background: white; border-top: 1px solid #f5f5f5; padding: 16px 20px;">
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn-action-primary" style="flex: 1; font-size: 14px;" onclick="sendChatResponse('Yes, absolutely! Count me in.')">Yes, I'm available</button>
+                        <button class="btn-action-primary" style="flex: 1; font-size: 14px; background: #f1f1f1; color: #666;" onclick="sendChatResponse('I need to check my schedule.')">Check Schedule</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active State Template (Hidden) -->
+            <div id="active-campaign-template" class="campaign-card" style="display: none;">
+                <div class="campaign-header">
+                    <div class="brand-info">
+                        <div class="brand-avatar" id="active-avatar" style="color: red; border-color: red;">H&M</div>
+                        <div class="brand-name" id="active-name">H&M <span class="vip-badge" style="margin-left: 4px;">VIP</span></div>
+                    </div>
+                    <div class="timer-chip velocity-vip">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        47h 52m
+                    </div>
+                </div>
+                <div class="campaign-title" id="active-title" style="margin: 16px 0;">Campaign Title Here</div>
+                
+                <div style="background: #f8f9fa; border-radius: 12px; padding: 12px; margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px;">
+                        <span style="opacity: 0.6;">Current Reward</span>
+                        <span style="color: #975a16; font-weight: 800;">15% Commission</span>
+                    </div>
+                    <div style="font-size: 10px; opacity: 0.4;">Drops to 10% in 47 hours</div>
+                </div>
+
+                <div class="campaign-footer" style="padding-top: 0;">
+                    <div style="font-size: 13px; font-weight: 600; color: var(--color-primary-500);">Awaiting Submission</div>
+                    <div class="btn-paste-icon" onclick="showSubmissionModal()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    </div>
+
+    <!-- Elite Flow Overlays -->
+    <div id="black-card-overlay" class="black-card-overlay">
+        <div class="digital-black-card" id="digital-black-card">
+            <div style="font-size: 10px; font-weight: 800; letter-spacing: 2px; opacity: 0.5;">MOONTECH ELITE</div>
+            <div style="margin-top: auto;">
+                <div style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">RETAINED PARTNER</div>
+                <div style="font-size: 12px; opacity: 0.6;">Level 2 Ambassador Status</div>
+            </div>
+            <div style="position: absolute; bottom: 30px; right: 30px; font-size: 24px; opacity: 0.3;">🌙</div>
+        </div>
+        <h2 style="font-size: 24px; margin-bottom: 16px;">Elite Invitation</h2>
+        <p style="font-size: 14px; color: rgba(255,255,255,0.7); margin-bottom: 32px;">
+            Your metrics speak for themselves. You have maintained a 6% engagement rate and flawless delivery. 
+            <b>ALDO</b> invites you to a Retained Partnership.
+        </p>
+        <button class="btn-action-primary" style="background: white; color: black;" onclick="navigateToRetainerContract()">View Partnership Offer</button>
+    </div>
+
+    <!-- Screen 10: Retainer Contract -->
+    <div id="screen-retainer-contract" class="screen" style="background: white;">
+        <div class="status-bar">
+            <span>9:41</span>
+            <div style="display: flex; gap: 4px;">
+                <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+            </div>
+        </div>
+        <div class="content" style="padding: 30px;">
+            <div style="margin-bottom: 40px;">
+                <h1 style="font-size: 28px; margin-bottom: 8px;">Partnership Offer</h1>
+                <p style="color: #6c757d; font-size: 14px;">Exclusive agreement with ALDO</p>
+            </div>
+
+            <div style="background: #f8f9fa; border-radius: 20px; padding: 24px; margin-bottom: 24px;">
+                <div style="font-size: 12px; font-weight: 700; color: #6c757d; text-transform: uppercase; margin-bottom: 16px;">Financial Overview</div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
+                    <div>
+                        <div style="font-size: 14px; color: #111;">Monthly Retainer</div>
+                        <div style="font-size: 28px; font-weight: 800;">$1,500.00</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 14px; color: #111;">Commission</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #4caf50;">10%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: #f8f9fa; border-radius: 20px; padding: 24px;">
+                <div style="font-size: 12px; font-weight: 700; color: #6c757d; text-transform: uppercase; margin-bottom: 16px;">Commitment</div>
+                <div style="display: flex; gap: 12px; margin-bottom: 12px;">
+                    <div style="width: 40px; height: 40px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 1px solid #eee;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+                    </div>
+                    <div>
+                        <div style="font-size: 15px; font-weight: 600;">2 Monthly Posts</div>
+                        <div style="font-size: 13px; color: #6c757d;">Fixed feed placement</div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <div style="width: 40px; height: 40px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 1px solid #eee;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    </div>
+                    <div>
+                        <div style="font-size: 15px; font-weight: 600;">4 Monthly Stories</div>
+                        <div style="font-size: 13px; color: #6c757d;">With conversion tracking</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="swipe-to-sign-container" id="contract-swipe-container">
+                <div class="swipe-text">SWIPE TO EXECUTE</div>
+                <div class="swipe-handle" id="swipe-handle" onmousedown="startSwipe(event)" ontouchstart="startSwipe(event)">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -2367,6 +2519,9 @@
         }
 
         // Potential for multi-screen logic later
+
+        let campaignsUnlocked = false;
+
         function navigateTo(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
@@ -2418,9 +2573,6 @@
             }, 1500);
         }
 
-        function toggleStrategy() {
-            document.getElementById('strategy-panel').classList.toggle('active');
-        }
 
         // Logic to enable submission button when URL is pasted
         document.addEventListener('input', (e) => {
@@ -2447,12 +2599,54 @@
         }
 
         let isVip = false;
+        let vTokenBalance = 240;
+        let reliabilityScore = 65;
+
         function activateVIP() {
             isVip = true;
             document.getElementById('user-vip-status').style.display = 'inline-flex';
             document.getElementById('velocity-promo').style.borderColor = '#d4af37';
             document.getElementById('velocity-promo').style.background = 'linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(10, 10, 10, 0.9) 100%)';
-            navigateTo('screen-campaigns');
+            
+            // Navigate to operational chat to complete the loop
+            navigateTo('screen-operational-chat');
+        }
+
+        function sendChatResponse(text) {
+            const container = document.getElementById('chat-messages');
+            const actions = document.getElementById('chat-actions');
+            
+            // Add user message
+            const sent = document.createElement('div');
+            sent.className = 'chat-bubble sent';
+            sent.innerText = text;
+            container.appendChild(sent);
+            
+            // Hide actions
+            actions.style.display = 'none';
+            
+            // Simulation response
+            setTimeout(() => {
+                const reply = document.createElement('div');
+                reply.className = 'chat-bubble received';
+                reply.innerHTML = `Perfect. You're exactly the kind of reliable partner we value. 🤝 <br><br><b>Reward Unlocked:</b> +50 V-Tokens. Your reliability score has increased!`;
+                container.appendChild(reply);
+                
+                // Update state
+                vTokenBalance += 50;
+                reliabilityScore = 85;
+                
+                // Sync UI
+                document.getElementById('v-token-count').innerText = vTokenBalance;
+                document.getElementById('reliability-val').innerText = reliabilityScore + '%';
+                document.getElementById('reliability-fill').style.width = reliabilityScore + '%';
+                
+                // Finish button
+                const footer = document.createElement('div');
+                footer.style.padding = '20px';
+                footer.innerHTML = `<button class="btn-action-primary" onclick="navigateTo('screen-performance')">View Dashboard</button>`;
+                container.appendChild(footer);
+            }, 1500);
         }
 
         function switchTab(tab) {
@@ -2484,33 +2678,155 @@
         }
 
         function claimCampaign(btn) {
-            const card = btn.closest('.campaign-card');
-            card.style.opacity = '0';
+            const claimedCard = btn.closest('.campaign-card');
+            
+            // Get data from claimed card to populate the active version
+            const brandAvatar = claimedCard.querySelector('.brand-avatar').innerHTML;
+            const brandAvatarColor = claimedCard.querySelector('.brand-avatar').style.color;
+            const brandName = claimedCard.querySelector('.brand-name').innerText;
+            const title = claimedCard.querySelector('.campaign-title').innerText;
+
+            // If not unlocked, hide everything else (the "Choose Wisely" phase)
+            if (!campaignsUnlocked) {
+                const list = document.getElementById('campaign-list-new');
+                Array.from(list.children).forEach(child => {
+                    child.style.transition = 'opacity 0.3s ease';
+                    child.style.opacity = '0';
+                    setTimeout(() => child.style.display = 'none', 300);
+                });
+            } else {
+                // If unlocked, just hide the specific card being claimed
+                claimedCard.style.opacity = '0';
+                setTimeout(() => claimedCard.style.display = 'none', 300);
+            }
+
+            // Replace/Add the active card after a short delay
             setTimeout(() => {
-                card.style.display = 'none';
+                const activeCard = document.getElementById('active-campaign-template').cloneNode(true);
+                activeCard.id = 'active-campaign-' + Math.random().toString(36).substr(2, 9);
                 
-                // Move to active
-                if (!document.getElementById('campaign-list-active')) {
-                    const div = document.createElement('div');
-                    div.id = 'campaign-list-active';
-                    div.className = 'campaign-list';
-                    div.style.display = 'none';
-                    document.getElementById('campaign-list-new').parentNode.insertBefore(div, document.getElementById('campaign-list-new').nextSibling);
-                }
+                activeCard.querySelector('#active-avatar').innerHTML = brandAvatar;
+                activeCard.querySelector('#active-avatar').style.color = brandAvatarColor;
+                activeCard.querySelector('#active-avatar').style.borderColor = brandAvatarColor;
+                activeCard.querySelector('#active-name').innerHTML = `${brandName} <span class="vip-badge" style="margin-left: 4px;">VIP</span>`;
+                activeCard.querySelector('#active-title').innerText = title;
                 
-                const activeCard = document.getElementById('active-campaign-hm').cloneNode(true);
-                activeCard.id = '';
                 activeCard.style.display = 'block';
-                document.getElementById('campaign-list-active').appendChild(activeCard);
+                activeCard.style.opacity = '0';
+                document.getElementById('campaign-list-new').appendChild(activeCard);
                 
-                // Auto-switch to active tab for feedback
-                const activeTabBtn = document.querySelectorAll('.tab-btn')[1];
-                activeTabBtn.click();
-            }, 300);
+                setTimeout(() => activeCard.style.opacity = '1', 50);
+            }, 350);
         }
 
         function closeSubmissionModal(event) {
             document.getElementById('submission-modal').classList.remove('active');
+        }
+
+        function unlockAndGoToCampaigns() {
+            campaignsUnlocked = true;
+            
+            // Show multipliers
+            document.getElementById('velocity-promo').style.display = 'block';
+            
+            // Hide the restriction banner inside the list
+            const list = document.getElementById('campaign-list-new');
+            if (list.firstElementChild) list.firstElementChild.style.display = 'none';
+
+            // Show any hidden campaigns (in case they were hidden during the "Choose Wisely" phase)
+            Array.from(list.children).forEach(child => {
+                child.style.display = 'block';
+                child.style.opacity = '1';
+            });
+
+            navigateTo('screen-campaigns');
+        }
+
+        function triggerEliteRetainer() {
+            const overlay = document.getElementById('black-card-overlay');
+            const card = document.getElementById('digital-black-card');
+            
+            overlay.style.display = 'flex';
+            
+            setTimeout(() => {
+                card.style.transform = 'translateY(0)';
+                // Simulate escalating haptic sequence
+                console.log("Haptic: escalating_triumphant_sequence");
+            }, 100);
+        }
+
+        function navigateToRetainerContract() {
+            document.getElementById('black-card-overlay').style.display = 'none';
+            navigateTo('screen-retainer-contract');
+        }
+
+        // Swipe to sign logic
+        let isSwiping = false;
+        let startX = 0;
+        let handleWidth = 52;
+        let containerWidth = 0;
+
+        function startSwipe(e) {
+            isSwiping = true;
+            startX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+            containerWidth = document.getElementById('contract-swipe-container').offsetWidth;
+            
+            document.addEventListener('mousemove', moveSwipe);
+            document.addEventListener('mouseup', endSwipe);
+            document.addEventListener('touchmove', moveSwipe);
+            document.addEventListener('touchend', endSwipe);
+        }
+
+        function moveSwipe(e) {
+            if (!isSwiping) return;
+            const currentX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+            let diff = currentX - startX;
+            
+            const maxDiff = containerWidth - handleWidth - 8;
+            if (diff < 0) diff = 0;
+            if (diff > maxDiff) diff = maxDiff;
+            
+            const handle = document.getElementById('swipe-handle');
+            handle.style.left = (diff + 4) + 'px';
+            
+            // Check for success (swipe 95% through)
+            if (diff >= maxDiff * 0.95) {
+                executeContract();
+            }
+        }
+
+        function endSwipe() {
+            if (!isSwiping) return;
+            isSwiping = false;
+            
+            const handle = document.getElementById('swipe-handle');
+            const containerWidth = document.getElementById('contract-swipe-container').offsetWidth;
+            const maxDiff = containerWidth - handleWidth - 8;
+            
+            // Reset if not finished
+            if (parseInt(handle.style.left) < maxDiff * 0.9) {
+                handle.style.transition = 'left 0.3s ease';
+                handle.style.left = '4px';
+                setTimeout(() => handle.style.transition = '', 300);
+            }
+            
+            document.removeEventListener('mousemove', moveSwipe);
+            document.removeEventListener('mouseup', endSwipe);
+            document.removeEventListener('touchmove', moveSwipe);
+            document.removeEventListener('touchend', endSwipe);
+        }
+
+        function executeContract() {
+            isSwiping = false;
+            const handle = document.getElementById('swipe-handle');
+            handle.style.background = '#4caf50';
+            handle.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+            
+            // Success animation
+            setTimeout(() => {
+                alert("Contract Executed. Welcome to the ALDO Elite Retainer program.");
+                navigateTo('screen-performance');
+            }, 500);
         }
 
         function submitAndGoToStats() {
