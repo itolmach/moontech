@@ -1153,6 +1153,88 @@
             pointer-events: none;
         }
 
+        /* Ambassador & Currency Styles (Restored) */
+        .v-token-balance {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 24px;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            margin-bottom: 24px;
+        }
+        .token-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #FFD700 0%, #F9A825 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 18px;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(249, 168, 37, 0.3);
+            flex-shrink: 0;
+        }
+        .ambassador-badge {
+            background: linear-gradient(135deg, #111 0%, #333 100%);
+            color: #FFD700;
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.5px;
+        }
+        .reliability-score-bar {
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .reliability-score-fill {
+            height: 100%;
+            background: #4caf50;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Chat Bubble Styles (Restored) */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 20px;
+            flex: 1;
+            background: #fdfdfd;
+        }
+        .chat-bubble {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            line-height: 1.4;
+            position: relative;
+        }
+        .chat-bubble.received {
+            background: #f1f1f1;
+            color: #111;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        .chat-bubble.sent {
+            background: var(--color-primary-500);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
         .nugget-title {
             color: #d4af37;
             font-weight: 800;
@@ -1173,99 +1255,10 @@
         <div class="iphone-notch"></div>
         <div class="iphone-content">
             
-            <!-- Screen 1: Choose Ad Platform -->
-            <div id="screen-choose-platform" class="screen active">
-                <div class="status-bar">
-                    <span>9:41</span>
-                    <div style="display: flex; gap: 4px;">
-                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
-                    </div>
-                </div>
+            <!-- Screen 1: Dashboard Landing -->
 
-                <div class="top-bar">
-                    <button class="back-btn">
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="15" y1="9" x2="3" y2="9"></line><polyline points="9 15 3 9 9 3"></polyline></svg>
-                    </button>
-                    <div class="page-title">New Ad</div>
-                </div>
-
-                <div class="content">
-                    <div class="step-dots">
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot active"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                    </div>
-
-                    <h1>Choose Ad Platform</h1>
-
-                    <div class="platform-list">
-                        <!-- Instagram -->
-                        <div class="platform-item selected" onclick="togglePlatform(this)">
-                            <div class="platform-icon icon-instagram">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.919-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c.796 0 1.441.645 1.441 1.44s-.645 1.44-1.441 1.44c-.795 0-1.439-.645-1.439-1.44s.644-1.44 1.439-1.44z"/></svg>
-                            </div>
-                            <div class="platform-name">Instagram</div>
-                            <div class="checkbox">
-                                <svg width="12" height="9" viewBox="0 0 12 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4 8 11 1"></polyline></svg>
-                            </div>
-                        </div>
-
-                        <!-- Tiktok -->
-                        <div class="platform-item selected" onclick="togglePlatform(this)">
-                            <div class="platform-icon icon-tiktok">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12.525.02c1.31-.032 2.622-.019 3.933-.006.148 1.83.925 3.328 2.472 4.414.86.602 1.827.915 2.871.975v4.137c-1.41-.052-2.612-.525-3.642-1.353-.39-.313-.73-.665-1.012-1.077v7.502c-.015 2.115-.49 3.99-1.892 5.51-1.492 1.62-3.42 2.433-5.592 2.44-2.182.012-4.103-.782-5.59-2.408-1.425-1.558-1.892-3.454-1.872-5.556.02-2.13.492-4.002 1.933-5.51 1.49-1.558 3.402-2.348 5.542-2.35 1.108-.002 2.164.218 3.125.66.012.005.022.016.042.032.002 1.348-.016 2.696-.016 4.044-1.028-.535-2.09-.73-3.232-.482-1.393.303-2.365 1.135-2.88 2.46-.226.58-.3 1.182-.257 1.81.04 1.11.455 1.96 1.332 2.613.88.65 1.884.815 2.955.518.842-.233 1.44-.754 1.802-1.52.12-.254.183-.532.203-.815l.006-11.405z"/></svg>
-                            </div>
-                            <div class="platform-name">Tiktok</div>
-                            <div class="checkbox">
-                                <svg width="12" height="9" viewBox="0 0 12 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4 8 11 1"></polyline></svg>
-                            </div>
-                        </div>
-
-                        <!-- Snapchat -->
-                        <div class="platform-item" onclick="togglePlatform(this)">
-                            <div class="platform-icon icon-snapchat">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="black"><path d="M12 2c-.93 0-1.808.232-2.583.642C7.943 3.414 7 4.596 7 6c0 .487.094.95.26 1.37.103.262.235.51.39.738.418.618.99 1.1 1.666 1.392.228.098.468.174.718.225.158.032.32.054.484.065.165.011.328.01.482-.003.012-.001.023-.002.035-.002h1.93c.012 0 .023.001.035.002.154.013.317.014.482.003.164-.011.326-.033.484-.065.25-.051.49-.127.718-.225.676-.292 1.248-.774 1.666-1.392.155-.228.287-.476.39-.738.166-.42.26-.883.26-1.37 0-1.404-.943-2.586-2.417-3.358C13.808 2.232 12.93 2 12 2zm0 18c-2.21 0-4-1.79-4-4 0-.482.12-.93.28-1.334.22-.556.568-1.042 1.01-1.42.274-.236.594-.424.945-.55.156-.056.32-.102.486-.134.152-.03.31-.052.47-.064.158-.01.316-.01.472.002.012 0 .023.002.035.002h.604c.012 0 .023-.001.035-.002.156-.012.314-.012.472-.002.16.012.318.034.47.064.166.032.33.078.486.134.351.126.671.314.945.55.442.378.79.864 1.01 1.42.16.404.28.852.28 1.334 0 2.21-1.79 4-4 4z"/></svg>
-                            </div>
-                            <div class="platform-name">Snapchat</div>
-                            <div class="checkbox">
-                                <svg width="12" height="9" viewBox="0 0 12 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4 8 11 1"></polyline></svg>
-                            </div>
-                        </div>
-
-                        <!-- Youtube -->
-                        <div class="platform-item" onclick="togglePlatform(this)">
-                            <div class="platform-icon icon-youtube">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                            </div>
-                            <div class="platform-name">Youtube</div>
-                            <div class="checkbox">
-                                <svg width="12" height="9" viewBox="0 0 12 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4 8 11 1"></polyline></svg>
-                            </div>
-                        </div>
-
-                        <!-- X -->
-                        <div class="platform-item" onclick="togglePlatform(this)">
-                            <div class="platform-icon icon-x">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.045 4.126H5.078z"/></svg>
-                            </div>
-                            <div class="platform-name">X</div>
-                            <div class="checkbox">
-                                <svg width="12" height="9" viewBox="0 0 12 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4 8 11 1"></polyline></svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="actions">
-                    <button class="btn-next" onclick="navigateTo('screen-campaigns')">Next</button>
-                    <div class="home-indicator"></div>
-                </div>
-            </div>
-
-            <!-- Screen 2: Campaigns -->
-            <div id="screen-campaigns" class="screen screen-background-grey">
+            <!-- Screen 1: Dashboard -->
+            <div id="screen-campaigns" class="screen screen-background-grey active">
                 <div class="status-bar" style="background: white;">
                     <span>9:41</span>
                     <div style="display: flex; gap: 4px;">
@@ -1510,10 +1503,11 @@
                     
                     <div class="input-group">
                         <label class="input-label">Social media links</label>
-                        <input type="text" class="text-input" placeholder="ex. Campgin xx">
+                        <input type="text" class="text-input" id="onboarding-link-input" placeholder="Paste your Instagram/TikTok link">
                     </div>
 
-                    <button class="btn-action-primary" onclick="submitAndGoToStats()">Submit</button>
+                    <button class="btn-action-primary" onclick="submitAndGoToStats()">Submit Link</button>
+                    <button class="btn-action-ghost" style="margin-top: 12px; color: #6c757d;" onclick="navigateTo('screen-waitlist'); closeSubmissionModal(event);">I don't have a link yet</button>
                     <div class="home-indicator"></div>
                 </div>
             </div>
@@ -1560,16 +1554,19 @@
                         <div style="font-size: 11px; color: #6c757d; margin-top: 8px;">Fast responses to team messages boost this score.</div>
                     </div>
 
-                    <div class="v-token-balance">
+                    <div class="v-token-balance" style="margin-top: 24px; background: #fafafa;">
                         <div class="token-icon">V</div>
                         <div style="flex: 1;">
-                            <div style="font-size: 11px; color: #6c757d; font-weight: 600;">MoonTech Currency</div>
+                            <div style="font-size: 11px; color: #6c757d; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">MoonTech Currency</div>
                             <div style="font-size: 18px; font-weight: 800; color: #111;"><span id="v-token-count">240</span> V-Tokens</div>
                         </div>
-                        <div style="font-size: 11px; color: #a29bfe; font-weight: 700; cursor: pointer;">REDEEM</div>
+                        <div style="font-size: 11px; color: var(--color-primary-500); font-weight: 700; cursor: pointer; background: var(--color-primary-50); padding: 6px 12px; border-radius: 100px;">REDEEM</div>
                     </div>
 
-                    <h1 style="font-size: 22px; margin-bottom: 16px;">March 13, 2025</h1>
+                    <div style="margin-top: 32px; margin-bottom: 16px;">
+                        <div style="font-size: 11px; font-weight: 700; color: #adb5bd; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Last Updated</div>
+                        <h1 style="font-size: 24px; margin-bottom: 0;">March 13, 2025</h1>
+                    </div>
                     
                     <div class="stat-grid">
                         <div class="stat-card wide" style="background: #f9f8fc; border-color: #f4f2f8;">
@@ -2404,91 +2401,90 @@
                     <div style="font-size: 10px; opacity: 0.4;">Drops to 10% in 47 hours</div>
                 </div>
 
-                <div class="campaign-footer" style="padding-top: 0;">
-                    <div style="font-size: 13px; font-weight: 600; color: var(--color-primary-500);">Awaiting Submission</div>
-                    <div class="btn-paste-icon" onclick="showSubmissionModal()">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <label style="font-size: 11px; font-weight: 700; color: #6c757d; text-transform: uppercase;">Paste Ad Link to Close</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" class="text-input" placeholder="ex. instagram.com/p/..." style="flex: 1; height: 44px; margin-bottom: 0; font-size: 13px;">
+                        <button class="btn-action-primary" style="width: auto; padding: 0 20px; height: 44px;" onclick="submitAndGoToStats()">Submit</button>
                     </div>
                 </div>
-            </div>
-
         </div>
     </div>
 
-    </div>
-
-    <!-- Elite Flow Overlays -->
-    <div id="black-card-overlay" class="black-card-overlay">
-        <div class="digital-black-card" id="digital-black-card">
-            <div style="font-size: 10px; font-weight: 800; letter-spacing: 2px; opacity: 0.5;">MOONTECH ELITE</div>
-            <div style="margin-top: auto;">
-                <div style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">RETAINED PARTNER</div>
-                <div style="font-size: 12px; opacity: 0.6;">Level 2 Ambassador Status</div>
-            </div>
-            <div style="position: absolute; bottom: 30px; right: 30px; font-size: 24px; opacity: 0.3;">🌙</div>
-        </div>
-        <h2 style="font-size: 24px; margin-bottom: 16px;">Elite Invitation</h2>
-        <p style="font-size: 14px; color: rgba(255,255,255,0.7); margin-bottom: 32px;">
-            Your metrics speak for themselves. You have maintained a 6% engagement rate and flawless delivery. 
-            <b>ALDO</b> invites you to a Retained Partnership.
-        </p>
-        <button class="btn-action-primary" style="background: white; color: black;" onclick="navigateToRetainerContract()">View Partnership Offer</button>
-    </div>
-
-    <!-- Screen 10: Retainer Contract -->
-    <div id="screen-retainer-contract" class="screen" style="background: white;">
-        <div class="status-bar">
-            <span>9:41</span>
-            <div style="display: flex; gap: 4px;">
-                <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
-            </div>
-        </div>
-        <div class="content" style="padding: 30px;">
-            <div style="margin-bottom: 40px;">
-                <h1 style="font-size: 28px; margin-bottom: 8px;">Partnership Offer</h1>
-                <p style="color: #6c757d; font-size: 14px;">Exclusive agreement with ALDO</p>
-            </div>
-
-            <div style="background: #f8f9fa; border-radius: 20px; padding: 24px; margin-bottom: 24px;">
-                <div style="font-size: 12px; font-weight: 700; color: #6c757d; text-transform: uppercase; margin-bottom: 16px;">Financial Overview</div>
-                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
-                    <div>
-                        <div style="font-size: 14px; color: #111;">Monthly Retainer</div>
-                        <div style="font-size: 28px; font-weight: 800;">$1,500.00</div>
+            <!-- Screen 9: Black Card Reveal Overlay -->
+            <div id="black-card-overlay" class="black-card-overlay">
+                <div class="digital-black-card" id="digital-black-card">
+                    <div style="font-size: 10px; font-weight: 800; letter-spacing: 2px; opacity: 0.5;">MOONTECH ELITE</div>
+                    <div style="margin-top: auto;">
+                        <div style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">RETAINED PARTNER</div>
+                        <div style="font-size: 12px; opacity: 0.6;">Level 2 Ambassador Status</div>
                     </div>
-                    <div style="text-align: right;">
-                        <div style="font-size: 14px; color: #111;">Commission</div>
-                        <div style="font-size: 20px; font-weight: 700; color: #4caf50;">10%</div>
+                    <div style="position: absolute; bottom: 30px; right: 30px; font-size: 24px; opacity: 0.3;">🌙</div>
+                </div>
+                <h2 style="font-size: 24px; margin-bottom: 16px;">Elite Invitation</h2>
+                <p style="font-size: 14px; color: rgba(255,255,255,0.7); margin-bottom: 32px;">
+                    Your metrics speak for themselves. You have maintained a 6% engagement rate and flawless delivery. 
+                    <b>ALDO</b> invites you to a Retained Partnership.
+                </p>
+                <button class="btn-action-primary" style="background: white; color: black;" onclick="navigateToRetainerContract()">View Partnership Offer</button>
+            </div>
+
+            <!-- Screen 10: Retainer Contract -->
+            <div id="screen-retainer-contract" class="screen" style="background: white;">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
                     </div>
                 </div>
-            </div>
+                <div class="content" style="padding: 30px;">
+                    <div style="margin-bottom: 40px;">
+                        <h1 style="font-size: 28px; margin-bottom: 8px;">Partnership Offer</h1>
+                        <p style="color: #6c757d; font-size: 14px;">Exclusive agreement with ALDO</p>
+                    </div>
 
-            <div style="background: #f8f9fa; border-radius: 20px; padding: 24px;">
-                <div style="font-size: 12px; font-weight: 700; color: #6c757d; text-transform: uppercase; margin-bottom: 16px;">Commitment</div>
-                <div style="display: flex; gap: 12px; margin-bottom: 12px;">
-                    <div style="width: 40px; height: 40px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 1px solid #eee;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+                    <div style="background: #f8f9fa; border-radius: 20px; padding: 24px; margin-bottom: 24px;">
+                        <div style="font-size: 12px; font-weight: 700; color: #6c757d; text-transform: uppercase; margin-bottom: 16px;">Financial Overview</div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
+                            <div>
+                                <div style="font-size: 14px; color: #111;">Monthly Retainer</div>
+                                <div style="font-size: 28px; font-weight: 800;">$1,500.00</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 14px; color: #111;">Commission</div>
+                                <div style="font-size: 20px; font-weight: 700; color: #4caf50;">10%</div>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <div style="font-size: 15px; font-weight: 600;">2 Monthly Posts</div>
-                        <div style="font-size: 13px; color: #6c757d;">Fixed feed placement</div>
-                    </div>
-                </div>
-                <div style="display: flex; gap: 12px;">
-                    <div style="width: 40px; height: 40px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 1px solid #eee;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                    </div>
-                    <div>
-                        <div style="font-size: 15px; font-weight: 600;">4 Monthly Stories</div>
-                        <div style="font-size: 13px; color: #6c757d;">With conversion tracking</div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="swipe-to-sign-container" id="contract-swipe-container">
-                <div class="swipe-text">SWIPE TO EXECUTE</div>
-                <div class="swipe-handle" id="swipe-handle" onmousedown="startSwipe(event)" ontouchstart="startSwipe(event)">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    <div style="background: #f8f9fa; border-radius: 20px; padding: 24px;">
+                        <div style="font-size: 12px; font-weight: 700; color: #6c757d; text-transform: uppercase; margin-bottom: 16px;">Commitment</div>
+                        <div style="display: flex; gap: 12px; margin-bottom: 12px;">
+                            <div style="width: 40px; height: 40px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 1px solid #eee;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+                            </div>
+                            <div>
+                                <div style="font-size: 15px; font-weight: 600;">2 Monthly Posts</div>
+                                <div style="font-size: 13px; color: #6c757d;">Fixed feed placement</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 12px;">
+                            <div style="width: 40px; height: 40px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 1px solid #eee;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            </div>
+                            <div>
+                                <div style="font-size: 15px; font-weight: 600;">4 Monthly Stories</div>
+                                <div style="font-size: 13px; color: #6c757d;">With conversion tracking</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swipe-to-sign-container" id="contract-swipe-container">
+                        <div class="swipe-text">SWIPE TO EXECUTE</div>
+                        <div class="swipe-handle" id="swipe-handle" onmousedown="startSwipe(event)" ontouchstart="startSwipe(event)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2528,13 +2524,21 @@
             
             handleSpecialTransitions(screenId);
 
-            // Ensure modals are closed when navigating
+            // Ensure modals AND overlays are closed when navigating
             document.getElementById('submission-modal').classList.remove('active');
+            document.getElementById('black-card-overlay').classList.remove('active');
             
             // If going to campaigns, show the gate
             if (screenId === 'screen-campaigns') {
                 document.getElementById('onboarding-gate').classList.add('active');
             }
+        }
+
+        function navigateToRetainerContract() {
+            // Hide the overlay first
+            document.getElementById('black-card-overlay').classList.remove('active');
+            // Navigate to the contract screen
+            navigateTo('screen-retainer-contract');
         }
 
         function processGate(result) {
@@ -2835,6 +2839,11 @@
             // Navigate to performance
             navigateTo('screen-performance');
         }
+        window.onload = () => {
+            // Land on campaigns directly
+            navigateTo('screen-campaigns');
+            // The onboarding gate is triggered automatically inside navigateTo('screen-campaigns')
+        };
     </script>
 </body>
 </html>
