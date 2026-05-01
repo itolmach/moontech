@@ -1,0 +1,2524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoonTech | Prototype Viewer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary-500: #3E278D;
+            --color-primary-900: #020A33;
+            --color-primary-200: #E9E4F8;
+            --color-primary-100: #F4F2F8;
+            --color-primary-50: #F9F8FC;
+            --color-neutral-500: #ADB5BD;
+            --color-neutral-200: #E9ECEF;
+            --color-white: #FFFFFF;
+            --color-black: #000000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f0f0f0;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        /* iPhone 16 Max Frame */
+        .iphone-frame {
+            width: 430px; /* iPhone 16 Pro Max approx width */
+            height: 932px; /* iPhone 16 Pro Max approx height */
+            background: #111;
+            border: 12px solid #1a1a1a;
+            border-radius: 55px;
+            position: relative;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .iphone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 35px;
+            background: #111;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            z-index: 100;
+        }
+
+        .iphone-content {
+            width: 100%;
+            height: 100%;
+            background: var(--color-white);
+            border-radius: 43px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Prototype Screens */
+        .screen {
+            display: none;
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Header Styles */
+        .status-bar {
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .top-bar {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            position: relative;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--color-primary-100);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+        }
+
+        .page-title {
+            flex: 1;
+            text-align: center;
+            font-family: 'Figtree', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--color-primary-900);
+        }
+
+        /* Content Styles */
+        .content {
+            flex: 1;
+            padding: 16px 20px;
+            overflow-y: auto;
+        }
+
+        .step-dots {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .dot {
+            flex: 1;
+            height: 4px;
+            border-radius: 4px;
+            background: var(--color-primary-200);
+        }
+
+        .dot.active {
+            background: #36325a;
+        }
+
+        h1 {
+            font-family: 'Figtree', sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            line-height: 1.2;
+            color: var(--color-primary-900);
+            margin-bottom: 32px;
+        }
+
+        /* Platform List */
+        .platform-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .platform-item {
+            display: flex;
+            align-items: center;
+            padding: 24px;
+            border-radius: 12px;
+            background: var(--color-white);
+            border: 1.5px solid var(--color-neutral-200);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .platform-item.selected {
+            background: var(--color-primary-200);
+            border-color: transparent;
+        }
+
+        .platform-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .platform-name {
+            flex: 1;
+            font-family: 'Figtree', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--color-primary-900);
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 1.5px solid var(--color-neutral-500);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .selected .checkbox {
+            background: var(--color-primary-500);
+            border-color: var(--color-primary-500);
+        }
+
+        .checkbox svg {
+            display: none;
+            color: white;
+        }
+
+        .selected .checkbox svg {
+            display: block;
+        }
+
+        /* Actions */
+        .actions {
+            padding: 16px 20px;
+            padding-bottom: 34px;
+        }
+
+        .btn-next {
+            width: 100%;
+            height: 52px;
+            background: var(--color-primary-500);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-family: 'Figtree', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .btn-next:hover {
+            opacity: 0.9;
+        }
+
+        .home-indicator {
+            width: 134px;
+            height: 5px;
+            background: #191e49;
+            border-radius: 100px;
+            margin: 18px auto 0 auto;
+        }
+
+        /* Platform Icons Colors */
+        .icon-instagram { background: linear-gradient(135deg, #FFD521 0%, #F50000 46%, #B900B4 87%); }
+        .icon-tiktok { background: black; }
+        .icon-snapchat { background: #FFFC00; }
+        .icon-youtube { background: red; }
+        .icon-x { background: black; }
+
+        /* Campaigns Screen */
+        .tabs-container {
+            display: flex;
+            background: var(--color-white);
+            border: 1px solid var(--color-primary-100);
+            border-radius: 12px;
+            padding: 6px;
+            margin-bottom: 16px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 8px 12px;
+            text-align: center;
+            font-family: 'Figtree', sans-serif;
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--color-primary-900);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--color-primary-500);
+            color: var(--color-primary-50);
+        }
+
+        .campaign-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-bottom: 24px;
+        }
+
+        .campaign-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-primary-100);
+            border-radius: 16px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .campaign-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .campaign-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: contain;
+            border: 1px solid var(--color-neutral-200);
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 10px;
+        }
+
+        .brand-name {
+            font-family: 'Figtree', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--color-primary-900);
+        }
+
+        .campaign-tags {
+            display: flex;
+            gap: 4px;
+        }
+
+        .tag {
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-family: 'Figtree', sans-serif;
+            font-weight: 600;
+            font-size: 11px;
+        }
+
+        .tag-reels { background: #fde6e6; color: #ea4444; }
+        .tag-videopost { background: #ebeffa; color: #5879da; }
+        .tag-stories { background: #fff5db; color: #ffb23b; }
+        .tag-carousel { background: #eff8ef; color: #52a353; }
+        .tag-photopost { background: #f4f2f8; color: #8273b8; }
+        .tag-more { background: #f8f9fa; color: #6c757d; }
+
+        .campaign-title {
+            font-family: 'Figtree', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--color-primary-900);
+            line-height: 20px;
+        }
+
+        .campaign-divider {
+            height: 1px;
+            background: var(--color-neutral-200);
+            width: 100%;
+        }
+
+        .campaign-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .campaign-payout {
+            font-family: 'Figtree', sans-serif;
+            font-weight: 500;
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .campaign-deadline {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-family: 'Figtree', sans-serif;
+            font-weight: 500;
+            font-size: 12px;
+            color: var(--color-primary-500);
+        }
+
+        .screen-background-grey {
+            background-color: #f8f9fa;
+        }
+
+        /* Screen 3: Campaign Details */
+        .details-header-glass {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+        }
+
+        .btn-liquid-glass {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 1000px;
+            border: none;
+            padding: 8px 16px;
+            font-family: 'Figtree', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            color: var(--color-primary-500);
+            cursor: pointer;
+        }
+
+        .countdown-bar {
+            background: var(--color-primary-500);
+            color: white;
+            padding: 12px;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Figtree', sans-serif;
+            font-size: 12px;
+            margin-bottom: -16px;
+        }
+
+        .details-main-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            margin-bottom: 16px;
+        }
+
+        .exclusive-tag {
+            background: rgba(15, 98, 244, 0.1);
+            color: #2c51be;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .payment-box {
+            background: #e9e4f8;
+            border: 1px solid #e7e1fa;
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .info-row:last-child { border-bottom: none; }
+
+        .info-label { color: #545454; font-size: 14px; font-weight: 500; }
+        .info-value { color: #000; font-size: 16px; font-weight: 600; }
+
+        .deliverable-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #ebebeb;
+        }
+
+        .deliverable-item:last-child { border-bottom: none; }
+
+        .btn-action-primary {
+            background: var(--color-primary-500);
+            color: white;
+            border: none;
+            border-radius: 1000px;
+            width: 100%;
+            padding: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .btn-action-ghost {
+            background: rgba(255, 247, 247, 1);
+            color: #d20000;
+            border: none;
+            border-radius: 1000px;
+            width: 100%;
+            padding: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Screen 4: Performance Overview */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card {
+            padding: 16px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid transparent;
+        }
+
+        .stat-card.wide { grid-column: span 2; }
+
+        .stat-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-label { color: #6c757d; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; margin-bottom: 2px; }
+        .stat-value { color: var(--color-primary-900); font-size: 16px; font-weight: 700; }
+
+        .btn-outline {
+            background: white;
+            border: 1px solid var(--color-primary-500);
+            color: var(--color-primary-500);
+            border-radius: 12px;
+            padding: 12px;
+            width: 100%;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+            flex: 1;
+        }
+
+        .empty-state-img {
+            width: 160px;
+            margin-bottom: 24px;
+        }
+
+        .empty-state-text {
+            color: #6c757d;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        .bottom-nav {
+            background: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0 24px 0;
+            position: sticky;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #495057;
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .nav-item.active { color: var(--color-primary-500); font-weight: 700; }
+
+        /* Submission Modal */
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 1000;
+            display: none;
+            align-items: flex-end;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .bottom-sheet {
+            width: 100%;
+            background: white;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            padding: 24px 20px 34px 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .modal-header {
+            text-align: center;
+            font-family: 'Figtree', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #000;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #eee;
+            border-radius: 16px;
+            font-size: 14px;
+            font-family: 'Figtree', sans-serif;
+            color: #545454;
+        }
+
+        .text-input::placeholder { color: #ADB5BD; }
+
+        /* Onboarding Gate */
+        .onboarding-gate {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 500;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.4);
+            animation: fadeIn 0.4s ease;
+        }
+
+        .onboarding-gate.active { display: flex; }
+
+        .gate-card {
+            background: white;
+            border-radius: 24px;
+            padding: 32px 24px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .gate-title {
+            font-family: 'Figtree', sans-serif;
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--color-primary-900);
+            margin-bottom: 12px;
+        }
+
+        .gate-desc {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        /* Registration & Onboarding */
+        .reg-header {
+            margin-bottom: 32px;
+        }
+
+        .reg-title {
+            font-family: 'Figtree', sans-serif;
+            font-weight: 700;
+            font-size: 32px;
+            color: var(--color-primary-900);
+            margin-bottom: 8px;
+        }
+
+        .reg-subtitle {
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .input-wrapper {
+            margin-bottom: 20px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 18px;
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: 'Figtree', sans-serif;
+        }
+
+        .brand-selection-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .brand-pill {
+            padding: 12px;
+            background: #f8f9fa;
+            border: 1.5px solid #eee;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .brand-pill.selected {
+            border-color: var(--color-primary-500);
+            background: var(--color-primary-50);
+            color: var(--color-primary-500);
+        }
+
+        .setup-progress {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+
+        .progress-segment {
+            flex: 1;
+            height: 4px;
+            background: #eee;
+            border-radius: 2px;
+        }
+
+        .progress-segment.active {
+            background: var(--color-primary-900);
+        }
+
+        .platform-row {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            border: 1.5px solid transparent;
+        }
+
+        .platform-row.selected {
+            background: white;
+            border-color: var(--color-primary-500);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .handle-suggestion {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .avatar-small {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #eee;
+            overflow: hidden;
+        }
+
+        /* Academy Premium Dark UI */
+        .academy-theme {
+            background: #050505 !important;
+            color: #FFFFFF !important;
+        }
+
+        .academy-theme .status-bar { color: white !important; }
+        .academy-theme .top-bar { background: transparent !important; }
+        
+        .liquid-glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 32px;
+            padding: 32px 24px;
+        }
+
+        .academy-title {
+            font-family: 'Figtree', sans-serif;
+            font-weight: 700;
+            font-size: 32px;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .academy-subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.5;
+        }
+
+        .glow-orb {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(108, 92, 231, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .status-ring-container {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 40px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status-ring-svg {
+            transform: rotate(-90deg);
+        }
+
+        .ring-bg { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 8; }
+        .ring-progress { 
+            fill: none; 
+            stroke: url(#ringGradient); 
+            stroke-width: 8; 
+            stroke-linecap: round;
+            stroke-dasharray: 565;
+            stroke-dashoffset: 400; /* Example: 30% */
+            transition: stroke-dashoffset 1s ease;
+        }
+
+        .curriculum-card {
+            min-width: 260px;
+            height: 360px;
+            border-radius: 24px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            margin-right: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        }
+
+        .black-card-elite {
+            background: linear-gradient(135deg, #111 0%, #000 100%);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            border-radius: 20px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shimmer {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite linear;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translate(-30%, -30%) rotate(45deg); }
+            100% { transform: translate(30%, 30%) rotate(45deg); }
+        }
+
+        .scanning-orb {
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, #a29bfe 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(15px);
+            animation: scanPulse 1.5s infinite alternate ease-in-out;
+            margin: 0 auto 40px;
+        }
+
+        @keyframes scanPulse {
+            from { transform: scale(0.8); opacity: 0.4; box-shadow: 0 0 20px rgba(162, 155, 254, 0.2); }
+            to { transform: scale(1.2); opacity: 0.8; box-shadow: 0 0 50px rgba(162, 155, 254, 0.5); }
+        }
+
+        .feedback-badge {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .feedback-badge.success {
+            border-color: rgba(76, 175, 80, 0.3);
+            color: #81c784;
+        }
+
+        /* Campaign Delivery System */
+        .timer-chip {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .timer-chip.velocity-vip {
+            background: #fff9db;
+            border-color: #fbd38d;
+            color: #975a16;
+        }
+
+        .btn-paste-icon {
+            width: 38px;
+            height: 38px;
+            background: var(--color-primary-500);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.2);
+            cursor: pointer;
+        }
+
+        /* Velocity Multiplier System */
+        .vip-badge {
+            background: linear-gradient(135deg, #d4af37 0%, #f9f295 50%, #b8860b 100%);
+            color: #000;
+            font-size: 9px;
+            font-weight: 900;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .velocity-trigger {
+            background: linear-gradient(135deg, rgba(62, 39, 141, 0.6) 0%, rgba(10, 10, 10, 0.8) 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .velocity-trigger::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            animation: pulseGlow 4s infinite alternate;
+        }
+
+        .velocity-chart-line {
+            height: 4px;
+            background: #222;
+            border-radius: 2px;
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .velocity-chart-fill {
+            position: absolute;
+            height: 100%;
+            background: #a29bfe;
+            border-radius: 2px;
+            width: 0;
+            transition: width 2s ease-out;
+        }
+
+        /* Strategy Panel */
+        .strategy-panel {
+            position: absolute;
+            top: 0;
+            right: -360px;
+            width: 360px;
+            height: 100%;
+            background: #0a0a0a;
+            border-left: 1px solid rgba(255,255,255,0.1);
+            z-index: 1000;
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow-y: auto;
+            padding: 40px 24px;
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .strategy-panel.active {
+            right: 0;
+        }
+
+        .strategy-toggle {
+            position: absolute;
+            top: 20px;
+            right: -80px;
+            transform: translateX(-100px);
+            z-index: 1001;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .strategy-toggle:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .nugget-title {
+            color: #d4af37;
+            font-weight: 800;
+            margin-top: 32px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 12px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="iphone-frame">
+        <button class="strategy-toggle" onclick="toggleStrategy()">Strategic Vision</button>
+        
+        <div id="strategy-panel" class="strategy-panel">
+            <h2 style="color: white; font-size: 24px; margin-bottom: 8px;">MoonTech Strategy</h2>
+            <div style="font-size: 12px; opacity: 0.5; margin-bottom: 32px;">May 1st Sprint Diagnostic</div>
+
+            <div class="nugget-title">I. The Entropy of 18.6%</div>
+            <p>Data indicates only 930/5,000 ads closed. In a high-integrity system, this 81.4% drop-off represents systemic noise. The creator’s "slacking" is a rational economic calculation to preserve time.</p>
+
+            <div class="nugget-title">II. Temporal Incoherence</div>
+            <p>Moontech lacks the algorithmic enforcement that makes programmatic ads predictable. You cannot promise "performance" if the execution layer is decoupled from the scheduling layer.</p>
+
+            <div class="nugget-title">III. Risk & Friction Asymmetry</div>
+            <p>Requiring scripts and double-uploads for unpaid tasks is a friction multiplier. When a task is speculative, the workflow must be near-zero friction to be viable.</p>
+
+            <div class="nugget-title">IV. Human-in-the-Loop Debt</div>
+            <p>Manual intervention is a sign of a broken protocol. Chasing creators irritates them and consumes margin. Communication should be a function of architecture, not nagging.</p>
+
+            <div class="nugget-title">V. Epistemic Feedback</div>
+            <p>The "weekend data blackout" destroys the creator's ability to correlate effort with earnings. Cybernetics requires a tight feedback loop for self-optimization.</p>
+
+            <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 40px 0;">
+
+            <div style="color: white; font-weight: 700; margin-bottom: 20px;">Strategic Solutions</div>
+            
+            <div style="margin-bottom: 24px;">
+                <b style="color: #a29bfe;">1. Velocity Multiplier:</b> Tiered commissions (48h = 15%). Urgency via positive reinforcement.
+            </div>
+            <div style="margin-bottom: 24px;">
+                <b style="color: #a29bfe;">2. Creator Streak:</b> Gamification for operational excellence. Tokens for "Trust" that unlock early access.
+            </div>
+            <div style="margin-bottom: 24px;">
+                <b style="color: #a29bfe;">3. Ambassador Fast-Track:</b> Reliability Score tracking. Automated "interview" for hybrid retainer contracts.
+            </div>
+            <div style="margin-bottom: 24px;">
+                <b style="color: #a29bfe;">4. Affiliate Downline:</b> Multi-level professional referrals with override bonuses.
+            </div>
+
+            <button class="btn-action-primary" style="background: rgba(255,255,255,0.05); color: white; margin-top: 40px;" onclick="toggleStrategy()">Close Panel</button>
+        </div>
+
+        <div class="iphone-notch"></div>
+        <div class="iphone-content">
+            
+            <!-- Screen 1: Choose Ad Platform -->
+            <div id="screen-choose-platform" class="screen active">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+
+                <div class="top-bar">
+                    <button class="back-btn">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="15" y1="9" x2="3" y2="9"></line><polyline points="9 15 3 9 9 3"></polyline></svg>
+                    </button>
+                    <div class="page-title">New Ad</div>
+                </div>
+
+                <div class="content">
+                    <div class="step-dots">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot active"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+
+                    <h1>Choose Ad Platform</h1>
+
+                    <div class="platform-list">
+                        <!-- Instagram -->
+                        <div class="platform-item selected" onclick="togglePlatform(this)">
+                            <div class="platform-icon icon-instagram">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.919-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c.796 0 1.441.645 1.441 1.44s-.645 1.44-1.441 1.44c-.795 0-1.439-.645-1.439-1.44s.644-1.44 1.439-1.44z"/></svg>
+                            </div>
+                            <div class="platform-name">Instagram</div>
+                            <div class="checkbox">
+                                <svg width="12" height="9" viewBox="0 0 12 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4 8 11 1"></polyline></svg>
+                            </div>
+                        </div>
+
+                        <!-- Tiktok -->
+                        <div class="platform-item selected" onclick="togglePlatform(this)">
+                            <div class="platform-icon icon-tiktok">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12.525.02c1.31-.032 2.622-.019 3.933-.006.148 1.83.925 3.328 2.472 4.414.86.602 1.827.915 2.871.975v4.137c-1.41-.052-2.612-.525-3.642-1.353-.39-.313-.73-.665-1.012-1.077v7.502c-.015 2.115-.49 3.99-1.892 5.51-1.492 1.62-3.42 2.433-5.592 2.44-2.182.012-4.103-.782-5.59-2.408-1.425-1.558-1.892-3.454-1.872-5.556.02-2.13.492-4.002 1.933-5.51 1.49-1.558 3.402-2.348 5.542-2.35 1.108-.002 2.164.218 3.125.66.012.005.022.016.042.032.002 1.348-.016 2.696-.016 4.044-1.028-.535-2.09-.73-3.232-.482-1.393.303-2.365 1.135-2.88 2.46-.226.58-.3 1.182-.257 1.81.04 1.11.455 1.96 1.332 2.613.88.65 1.884.815 2.955.518.842-.233 1.44-.754 1.802-1.52.12-.254.183-.532.203-.815l.006-11.405z"/></svg>
+                            </div>
+                            <div class="platform-name">Tiktok</div>
+                            <div class="checkbox">
+                                <svg width="12" height="9" viewBox="0 0 12 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4 8 11 1"></polyline></svg>
+                            </div>
+                        </div>
+
+                        <!-- Snapchat -->
+                        <div class="platform-item" onclick="togglePlatform(this)">
+                            <div class="platform-icon icon-snapchat">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="black"><path d="M12 2c-.93 0-1.808.232-2.583.642C7.943 3.414 7 4.596 7 6c0 .487.094.95.26 1.37.103.262.235.51.39.738.418.618.99 1.1 1.666 1.392.228.098.468.174.718.225.158.032.32.054.484.065.165.011.328.01.482-.003.012-.001.023-.002.035-.002h1.93c.012 0 .023.001.035.002.154.013.317.014.482.003.164-.011.326-.033.484-.065.25-.051.49-.127.718-.225.676-.292 1.248-.774 1.666-1.392.155-.228.287-.476.39-.738.166-.42.26-.883.26-1.37 0-1.404-.943-2.586-2.417-3.358C13.808 2.232 12.93 2 12 2zm0 18c-2.21 0-4-1.79-4-4 0-.482.12-.93.28-1.334.22-.556.568-1.042 1.01-1.42.274-.236.594-.424.945-.55.156-.056.32-.102.486-.134.152-.03.31-.052.47-.064.158-.01.316-.01.472.002.012 0 .023.002.035.002h.604c.012 0 .023-.001.035-.002.156-.012.314-.012.472-.002.16.012.318.034.47.064.166.032.33.078.486.134.351.126.671.314.945.55.442.378.79.864 1.01 1.42.16.404.28.852.28 1.334 0 2.21-1.79 4-4 4z"/></svg>
+                            </div>
+                            <div class="platform-name">Snapchat</div>
+                            <div class="checkbox">
+                                <svg width="12" height="9" viewBox="0 0 12 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4 8 11 1"></polyline></svg>
+                            </div>
+                        </div>
+
+                        <!-- Youtube -->
+                        <div class="platform-item" onclick="togglePlatform(this)">
+                            <div class="platform-icon icon-youtube">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                            </div>
+                            <div class="platform-name">Youtube</div>
+                            <div class="checkbox">
+                                <svg width="12" height="9" viewBox="0 0 12 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4 8 11 1"></polyline></svg>
+                            </div>
+                        </div>
+
+                        <!-- X -->
+                        <div class="platform-item" onclick="togglePlatform(this)">
+                            <div class="platform-icon icon-x">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.045 4.126H5.078z"/></svg>
+                            </div>
+                            <div class="platform-name">X</div>
+                            <div class="checkbox">
+                                <svg width="12" height="9" viewBox="0 0 12 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 5 4 8 11 1"></polyline></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn-next" onclick="navigateTo('screen-campaigns')">Next</button>
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+
+            <!-- Screen 2: Campaigns -->
+            <div id="screen-campaigns" class="screen screen-background-grey">
+                <div class="status-bar" style="background: white;">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+
+                <div class="top-bar" style="background: white; border-top-left-radius: 43px; border-top-right-radius: 43px;">
+                    <button class="back-btn" onclick="navigateTo('screen-choose-platform')">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="15" y1="9" x2="3" y2="9"></line><polyline points="9 15 3 9 9 3"></polyline></svg>
+                    </button>
+                    <div class="page-title">Campaigns</div>
+                    <div style="width: 40px;"></div> <!-- Spacer for centering title -->
+                </div>
+
+                <div class="content" style="padding-top: 24px;">
+                    <!-- Onboarding Gate Overlay -->
+                    <div id="onboarding-gate" class="onboarding-gate">
+                        <div class="gate-card">
+                            <div class="gate-title">Connect your Socials</div>
+                            <div class="gate-desc">Submit your social media link to unlock exclusive campaigns and track your earnings.</div>
+                            
+                            <div class="input-group">
+                                <input type="text" class="text-input" placeholder="instagram.com/yourname">
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <button class="btn-action-primary" onclick="processGate('granted')">Unlock Campaigns</button>
+                                <button class="btn-action-ghost" style="color: #6c757d; background: #eee;" onclick="processGate('waitlist')">Check Waitlist</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tabs-container">
+                        <div class="tab-btn active" onclick="switchTab('new')">New</div>
+                        <div class="tab-btn" onclick="switchTab('active')">Active</div>
+                        <div class="tab-btn" onclick="switchTab('closed')">Closed</div>
+                    </div>
+
+                    <!-- Velocity Trigger Card -->
+                    <div id="velocity-promo" class="velocity-trigger" onclick="navigateTo('screen-velocity-hook')">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; position: relative;">
+                            <div>
+                                <div style="font-size: 11px; color: #a29bfe; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px;">VIP ACCESS</div>
+                                <h3 style="color: white; font-size: 18px; margin-bottom: 4px;">Unlock Multipliers</h3>
+                                <p style="color: rgba(255,255,255,0.5); font-size: 13px;">Boost commission to 15%</p>
+                            </div>
+                            <div class="vip-badge" style="display: none;" id="user-vip-status">VIP ACTIVE</div>
+                        </div>
+                        <div style="margin-top: 20px; color: white; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; z-index: 1; position: relative;">
+                            Show Me How <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </div>
+                    </div>
+
+                    <div id="campaign-list-new" class="campaign-list">
+                        <!-- H&M -->
+                        <div class="campaign-card">
+                            <div class="campaign-header">
+                                <div class="brand-info">
+                                    <div class="brand-avatar" style="color: red; border-color: red;">H&M</div>
+                                    <div class="brand-name">H&M</div>
+                                </div>
+                                <div class="campaign-tags">
+                                    <div class="tag tag-reels">Reels</div>
+                                    <div class="tag tag-videopost">Videopost</div>
+                                </div>
+                            </div>
+                            <div class="campaign-title">Sweet February! Enjoy your 20% disscount</div>
+                            <div class="campaign-divider"></div>
+                            <div class="campaign-footer">
+                                <div class="campaign-payout">Payout 15%</div>
+                                <button class="btn-action-primary" style="width: auto; padding: 10px 24px; font-size: 14px;" onclick="claimCampaign(this)">Claim</button>
+                            </div>
+                        </div>
+
+                        <!-- Active State Template (Hidden) -->
+                        <div id="active-campaign-hm" class="campaign-card" style="display: none;">
+                            <div class="campaign-header">
+                                <div class="brand-info">
+                                    <div class="brand-avatar" style="color: red; border-color: red;">H&M</div>
+                                    <div class="brand-name">H&M <span class="vip-badge" style="margin-left: 4px;">VIP</span></div>
+                                </div>
+                                <div class="timer-chip velocity-vip">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                    47h 52m
+                                </div>
+                            </div>
+                            <div class="campaign-title" style="margin: 16px 0;">Sweet February! Enjoy your 20% disscount</div>
+                            
+                            <div style="background: #f8f9fa; border-radius: 12px; padding: 12px; margin-bottom: 16px;">
+                                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px;">
+                                    <span style="opacity: 0.6;">Current Reward</span>
+                                    <span style="color: #975a16; font-weight: 800;">15% Commission</span>
+                                </div>
+                                <div style="font-size: 10px; opacity: 0.4;">Drops to 10% in 47 hours</div>
+                            </div>
+
+                            <div class="campaign-footer" style="padding-top: 0;">
+                                <div style="font-size: 13px; font-weight: 600; color: var(--color-primary-500);">Awaiting Submission</div>
+                                <div class="btn-paste-icon" onclick="showSubmissionModal()">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Adidas -->
+                        <div class="campaign-card" onclick="navigateTo('screen-campaign-details')">
+                            <div class="campaign-header">
+                                <div class="brand-info">
+                                    <div class="brand-avatar" style="color: black; border-color: black;">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12.002 18.006l-5.694-8.814h11.385l-5.691 8.814zM18.847 8.358l4.499 6.96h-4.041l-2.434-3.766 1.976-3.194zm-13.693 0l1.975 3.194-2.434 3.766h-4.042l4.501-6.96z"/></svg>
+                                    </div>
+                                    <div class="brand-name">Adidas</div>
+                                </div>
+                                <div class="campaign-tags">
+                                    <div class="tag tag-stories">Stories</div>
+                                    <div class="tag tag-carousel">Carousel</div>
+                                </div>
+                            </div>
+                            <div class="campaign-title">Sweet February! Enjoy your 20% disscount</div>
+                            <div class="campaign-divider"></div>
+                            <div class="campaign-footer">
+                                <div class="campaign-payout">Payout 15%</div>
+                                <div class="campaign-deadline">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                    Apply by 5th Feb
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Boots -->
+                        <div class="campaign-card" onclick="navigateTo('screen-campaign-details')">
+                            <div class="campaign-header">
+                                <div class="brand-info">
+                                    <div class="brand-avatar" style="color: #020a33;">Boots</div>
+                                    <div class="brand-name">Boots</div>
+                                </div>
+                                <div class="campaign-tags">
+                                    <div class="tag tag-photopost">Photopost</div>
+                                </div>
+                            </div>
+                            <div class="campaign-title">Sweet February! Enjoy your 20% disscount</div>
+                            <div class="campaign-divider"></div>
+                            <div class="campaign-footer">
+                                <div class="campaign-payout">Payout 15%</div>
+                                <div class="campaign-deadline">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                    Apply by 5th Feb
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ALDO -->
+                        <div class="campaign-card" onclick="navigateTo('screen-campaign-details')">
+                            <div class="campaign-header">
+                                <div class="brand-info">
+                                    <div class="brand-avatar" style="color: black; border-color: black; background: black; color: white;">ALDO</div>
+                                    <div class="brand-name">ALDO</div>
+                                </div>
+                                <div class="campaign-tags">
+                                    <div class="tag tag-stories">Stories</div>
+                                    <div class="tag tag-carousel">Carousel</div>
+                                    <div class="tag tag-more">...</div>
+                                </div>
+                            </div>
+                            <div class="campaign-title">Sweet February! Enjoy your 20% disscount</div>
+                            <div class="campaign-divider"></div>
+                            <div class="campaign-footer">
+                                <div class="campaign-payout">Payout 15%</div>
+                                <div class="campaign-deadline">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                    Apply by 5th Feb
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="height: 34px; width: 100%; display: flex; justify-content: center; align-items: flex-end; padding-bottom: 8px;">
+                        <div class="home-indicator"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Screen 3: Campaign Details -->
+            <div id="screen-campaign-details" class="screen screen-background-grey">
+                <div class="status-bar" style="background: transparent;">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+
+                <div class="details-header-glass">
+                    <button class="back-btn" style="background: white;" onclick="navigateTo('screen-campaigns')">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="15" y1="9" x2="3" y2="9"></line><polyline points="9 15 3 9 9 3"></polyline></svg>
+                    </button>
+                    <button class="btn-liquid-glass">What's Next?</button>
+                </div>
+
+                <div class="content" style="padding-top: 0;">
+                    <div class="countdown-bar">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        <span>Accept within <b>3d 5h 02m</b></span>
+                    </div>
+
+                    <div class="details-main-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div class="brand-avatar" style="color: red; border-color: red;">H&M</div>
+                                <div class="brand-name" style="font-size: 20px;">H&M</div>
+                            </div>
+                            <div class="exclusive-tag">Exclusive</div>
+                        </div>
+                        <div class="campaign-divider" style="margin-bottom: 16px;"></div>
+                        <h2 style="font-family: 'Figtree'; font-size: 20px; color: var(--color-primary-900); margin-bottom: 8px;">Shop your style with H&M</h2>
+                        <p style="font-size: 12px; color: #545454; line-height: 1.4;">We're launching our new summer collection and looking for fashion influencers to showcase our latest designs. Create authentic content featuring our pieces in your daily life.</p>
+                    </div>
+
+                    <div class="payment-box">
+                        <div style="color: var(--color-primary-500); font-size: 12px; margin-bottom: 4px;">Payment Details</div>
+                        <div style="color: var(--color-primary-900); font-size: 20px; font-weight: 700;">10% per Order</div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-row">
+                            <span class="info-label">Campaign Duration</span>
+                            <span class="info-value">2 Weeks</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Platform(s)</span>
+                            <div style="display: flex; gap: 8px;">
+                                <div class="platform-icon icon-instagram" style="width: 24px; height: 24px;"></div>
+                                <div class="platform-icon icon-tiktok" style="width: 24px; height: 24px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-row" style="border-bottom: none;">
+                            <span class="info-label">Deliverables</span>
+                            <span style="color: var(--color-primary-500); font-size: 14px; font-weight: 600;">Hide</span>
+                        </div>
+                        <div style="margin-top: 8px;">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                                <div class="platform-icon icon-instagram" style="width: 24px; height: 24px;"></div>
+                                <span style="font-weight: 600; font-size: 16px;">Instagram</span>
+                            </div>
+                            <div class="deliverable-item">
+                                <span class="info-label">Feed Post</span>
+                                <span class="info-value">2x</span>
+                            </div>
+                            <div class="deliverable-item">
+                                <span class="info-label">Stories</span>
+                                <span class="info-value">5x</span>
+                            </div>
+                            <div class="deliverable-item">
+                                <span class="info-label">Reels</span>
+                                <span class="info-value">3x</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions" style="background: white;">
+                    <button class="btn-action-primary" onclick="showSubmissionModal()">Accept Campaign</button>
+                    <button class="btn-action-ghost">Decline</button>
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+
+            <!-- Submission Modal Overlay -->
+            <div id="submission-modal" class="modal-overlay" onclick="closeSubmissionModal(event)">
+                <div class="bottom-sheet" onclick="event.stopPropagation()">
+                    <div class="modal-header">Record Submission</div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Social media links</label>
+                        <input type="text" class="text-input" placeholder="ex. Campgin xx">
+                    </div>
+
+                    <button class="btn-action-primary" onclick="submitAndGoToStats()">Submit</button>
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+
+            <!-- Screen 4: Performance Overview -->
+            <div id="screen-performance" class="screen" style="background: white;">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+
+                <div class="top-bar">
+                    <button class="back-btn" onclick="navigateTo('screen-campaign-details')">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="15" y1="9" x2="3" y2="9"></line><polyline points="9 15 3 9 9 3"></polyline></svg>
+                    </button>
+                    <div class="page-title">Performance Overview</div>
+                    <button class="back-btn" style="background: var(--color-primary-50); color: var(--color-primary-500);">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                    </button>
+                </div>
+
+                <div class="content">
+                    <h1 style="font-size: 22px; margin-bottom: 16px;">March 13, 2025</h1>
+                    
+                    <div class="stat-grid">
+                        <div class="stat-card wide" style="background: #f9f8fc; border-color: #f4f2f8;">
+                            <div class="stat-icon" style="background: #e9e4f8;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3e278d" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                            </div>
+                            <div>
+                                <div class="stat-label">Payout</div>
+                                <div class="stat-value">0.00 AED</div>
+                            </div>
+                        </div>
+                        <div class="stat-card" style="background: #fffcf7; border-color: #fff5db;">
+                            <div class="stat-icon" style="background: #fff5db;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff9500" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                            </div>
+                            <div>
+                                <div class="stat-label">Orders</div>
+                                <div class="stat-value">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card" style="background: #fffafe; border-color: #f2e4ef;">
+                            <div class="stat-icon" style="background: #f2e4ef;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ad5c9a" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                            </div>
+                            <div>
+                                <div class="stat-label">Brands</div>
+                                <div class="stat-value">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-outline">See more insights</div>
+
+                    <div style="margin-top: 24px; display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="font-size: 16px; font-weight: 700;">Earnings</h3>
+                        <div style="font-size: 12px; color: var(--color-primary-500); background: var(--color-primary-50); padding: 4px 12px; border-radius: 100px; display: flex; align-items: center; gap: 4px;">
+                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 8 4 4-4 4"></path><path d="M2 12h20"></path><path d="m6 8-4 4 4 4"></path></svg>
+                             Compare
+                        </div>
+                    </div>
+
+                    <div class="empty-state">
+                        <div class="empty-state-img">
+                            <!-- Simplified Illustration placeholder -->
+                            <svg viewBox="0 0 200 160" fill="none">
+                                <circle cx="100" cy="80" r="70" fill="#FFF5DB" opacity="0.5"/>
+                                <rect x="60" y="50" width="80" height="60" rx="4" fill="#B6ABD8"/>
+                                <rect x="70" y="60" width="10" height="30" fill="#3e278d" opacity="0.3"/>
+                                <rect x="90" y="70" width="10" height="20" fill="#3e278d" opacity="0.6"/>
+                                <rect x="110" y="65" width="10" height="25" fill="#3e278d"/>
+                            </svg>
+                        </div>
+                        <p class="empty-state-text">No statistics to show at the moment</p>
+                        <button class="btn-action-primary" style="padding: 18px 32px; font-size: 16px;" onclick="navigateTo('screen-reg-phone')">Create Your Free Account</button>
+                        <div style="margin-top: 20px; font-size: 13px; color: #adb5bd; cursor: pointer; text-decoration: underline;" onclick="navigateTo('screen-campaigns')">Skip to Campaigns (Demo)</div>
+                    </div>
+                </div>
+
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        <span>My Ads</span>
+                    </div>
+                    <div class="nav-item active">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                        <span>Earnings</span>
+                    </div>
+                    <div class="nav-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        <span>Community</span>
+                    </div>
+                    <div class="nav-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                        <span>My Coupons</span>
+                    </div>
+                    <div class="nav-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <span>Account</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 6: Registration - Phone Number -->
+            <div id="screen-reg-phone" class="screen" style="background: white;">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+                <div class="top-bar">
+                    <button class="back-btn" onclick="navigateTo('screen-performance')">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="15" y1="9" x2="3" y2="9"></line><polyline points="9 15 3 9 9 3"></polyline></svg>
+                    </button>
+                    <button class="btn-liquid-glass" style="color: var(--color-primary-500); border: 1.5px solid #eee;">العربية <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></button>
+                </div>
+                <div class="content">
+                    <div class="reg-header">
+                        <div class="reg-title">Let's get started</div>
+                        <div class="reg-subtitle">Enter your phone number to sign in or create account</div>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <div style="font-size: 12px; color: #6c757d; margin-bottom: 8px;">United Arab Emirates <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                        <div style="display: flex; gap: 12px; align-items: center; border-bottom: 1.5px solid #eee; padding-bottom: 8px;">
+                            <div style="font-size: 24px; font-weight: 700; color: var(--color-primary-900);">+971</div>
+                            <input type="tel" class="text-input" placeholder="Phone number" style="border: none; padding: 0; font-size: 24px; font-weight: 400;">
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 40px;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
+                            <div style="flex: 1; height: 1px; background: #eee;"></div>
+                            <div style="font-size: 12px; color: #6c757d;">Or continue using</div>
+                            <div style="flex: 1; height: 1px; background: #eee;"></div>
+                        </div>
+                        <div style="display: flex; justify-content: center; gap: 16px;">
+                            <div class="stat-icon" style="background: #f4f2f8; width: 44px; height: 44px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.012 2.25l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.045 4.126H5.078z"/></svg></div>
+                            <div class="stat-icon" style="background: #f4f2f8; width: 44px; height: 44px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg></div>
+                            <div class="stat-icon" style="background: #f4f2f8; width: 44px; height: 44px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.152 6.896c-.115 0-.223.047-.302.131l-3.984 4.184a.443.443 0 0 1-.314.139.444.444 0 0 1-.314-.139l-1.428-1.5a.434.434 0 0 1 0-.628.456.456 0 0 1 .628 0l1.114 1.17 3.67-3.854a.456.456 0 0 1 .628 0 .434.434 0 0 1 0 .628z" fill="white"/><path d="M17.05 20.28c-.96 0-1.74-.78-1.74-1.74s.78-1.74 1.74-1.74 1.74.78 1.74 1.74-.78 1.74-1.74 1.74zM12 20.28c-.96 0-1.74-.78-1.74-1.74s.78-1.74 1.74-1.74 1.74.78 1.74 1.74-.78 1.74-1.74 1.74zM6.95 20.28c-.96 0-1.74-.78-1.74-1.74s.78-1.74 1.74-1.74 1.74.78 1.74 1.74-.78 1.74-1.74 1.74z" fill="black"/></svg></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="btn-action-primary" onclick="navigateTo('screen-reg-otp')">Continue</button>
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+
+            <!-- Screen 6b: Registration - OTP -->
+            <div id="screen-reg-otp" class="screen" style="background: white;">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+                <div class="top-bar">
+                    <button class="back-btn" onclick="navigateTo('screen-reg-phone')">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="15" y1="9" x2="3" y2="9"></line><polyline points="9 15 3 9 9 3"></polyline></svg>
+                    </button>
+                    <button class="btn-liquid-glass" style="color: var(--color-primary-500); border: 1.5px solid #eee;">العربية <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg></button>
+                </div>
+                <div class="content">
+                    <div class="reg-header">
+                        <div class="reg-title">Enter code</div>
+                        <div class="reg-subtitle">We've sent a 6-digit code to your <b>WhatsApp</b> on <br><b>+971 50 123 4567</b> Enter it below to verify account</div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; align-items: center; margin-top: 32px;">
+                        <input type="text" class="text-input" placeholder="Enter code" style="border: none; padding: 0; font-size: 32px; font-weight: 400; border-left: 2px solid var(--color-primary-500); padding-left: 8px;">
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="btn-action-primary" onclick="navigateTo('screen-reg-success')">Verify</button>
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+
+            <!-- Screen 6c: Registration - Success Transition -->
+            <div id="screen-reg-success" class="screen" style="background: white;">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+                <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                    <div style="width: 80px; height: 80px; background: #e8f5e9; color: #4caf50; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; animation: scaleIn 0.5s ease;">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <div class="reg-title">Verified!</div>
+                    <div class="reg-subtitle">Your phone number has been successfully verified.</div>
+                    <button class="btn-action-primary" style="margin-top: 32px;" onclick="navigateTo('screen-reg-email')">Continue Setup</button>
+                </div>
+            </div>
+
+            <!-- Screen 6d: Registration - Email -->
+            <div id="screen-reg-email" class="screen" style="background: white;">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+                <div class="top-bar">
+                    <button class="back-btn" onclick="navigateTo('screen-reg-otp')">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="15" y1="9" x2="3" y2="9"></line><polyline points="9 15 3 9 9 3"></polyline></svg>
+                    </button>
+                </div>
+                <div class="content">
+                    <div class="reg-header">
+                        <div class="reg-title">Enter your email</div>
+                        <div class="reg-subtitle">Enter your email to sign in or create account</div>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <input type="email" class="text-input" placeholder="Enter your email" style="border: none; padding: 0; font-size: 24px; font-weight: 400; border-bottom: 1.5px solid #eee; padding-bottom: 8px; width: 100%;">
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="btn-action-primary" onclick="navigateTo('screen-reg-password')">Continue</button>
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+
+            <!-- Screen 6d: Registration - Password -->
+            <div id="screen-reg-password" class="screen" style="background: white;">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+                <div class="top-bar">
+                    <button class="back-btn" onclick="navigateTo('screen-reg-email')">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="15" y1="9" x2="3" y2="9"></line><polyline points="9 15 3 9 9 3"></polyline></svg>
+                    </button>
+                </div>
+                <div class="content">
+                    <div class="reg-header">
+                        <div class="reg-title">Password</div>
+                        <div class="reg-subtitle">Enter your password</div>
+                    </div>
+
+                    <div class="input-wrapper" style="position: relative;">
+                        <input type="password" class="text-input" value="••••••••" style="border: none; padding: 0; font-size: 24px; font-weight: 400; border-bottom: 1.5px solid #eee; padding-bottom: 8px; width: 100%;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ADB5BD" stroke-width="2" style="position: absolute; right: 0; top: 4px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </div>
+                    <div style="color: var(--color-primary-500); font-size: 12px; font-weight: 600; margin-top: 12px; cursor: pointer;" onclick="navigateTo('screen-reg-forgot-password')">Forgot password?</div>
+                </div>
+                <div class="actions">
+                    <button class="btn-action-primary" onclick="navigateTo('screen-setup-platforms')">Continue</button>
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+
+            <!-- Screen 6e: Forgot Password -->
+            <div id="screen-reg-forgot-password" class="screen" style="background: white;">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+                <div class="top-bar">
+                    <button class="back-btn" onclick="navigateTo('screen-reg-password')">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="15" y1="9" x2="3" y2="9"></line><polyline points="9 15 3 9 9 3"></polyline></svg>
+                    </button>
+                </div>
+                <div class="content">
+                    <div class="reg-header">
+                        <div class="reg-title">Reset Password</div>
+                        <div class="reg-subtitle">Enter your email to receive a password reset link.</div>
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="email" class="text-input" placeholder="Email Address" style="border-bottom: 1.5px solid #eee; width: 100%;">
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="btn-action-primary" onclick="navigateTo('screen-reg-password')">Send Link</button>
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+
+            <!-- Screen 7: Account Setup - Platforms -->
+            <div id="screen-setup-platforms" class="screen" style="background: white;">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+                <div class="top-bar">
+                    <button class="back-btn" onclick="navigateTo('screen-reg-password')">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="15" y1="9" x2="3" y2="9"></line><polyline points="9 15 3 9 9 3"></polyline></svg>
+                    </button>
+                    <button class="btn-liquid-glass" style="color: var(--color-primary-500); border: 1.5px solid #eee;">العربية <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg></button>
+                </div>
+                <div class="content">
+                    <div class="setup-progress">
+                        <div class="progress-segment active"></div>
+                        <div class="progress-segment"></div>
+                        <div class="progress-segment"></div>
+                    </div>
+                    <div class="reg-header">
+                        <div class="reg-title">Choose your platform</div>
+                        <div class="reg-subtitle">Choose platforms you work with</div>
+                    </div>
+
+                    <div class="platform-row selected">
+                        <div class="platform-icon icon-instagram" style="width: 32px; height: 32px;"></div>
+                        <div style="flex: 1; margin-left: 12px; font-weight: 600;">Instagram</div>
+                        <div style="width: 20px; height: 20px; border-radius: 50%; background: var(--color-primary-900); display: flex; align-items: center; justify-content: center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                    </div>
+
+                    <div class="platform-row selected">
+                        <div class="platform-icon icon-tiktok" style="width: 32px; height: 32px;"></div>
+                        <div style="flex: 1; margin-left: 12px; font-weight: 600;">TikTok</div>
+                        <div style="width: 20px; height: 20px; border-radius: 50%; background: var(--color-primary-900); display: flex; align-items: center; justify-content: center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                    </div>
+
+                    <div class="platform-row">
+                        <div class="platform-icon icon-snapchat" style="width: 32px; height: 32px;"></div>
+                        <div style="flex: 1; margin-left: 12px; font-weight: 600;">Snapchat</div>
+                        <div style="width: 20px; height: 20px; border: 1.5px solid #ddd; border-radius: 50%;"></div>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="btn-action-primary" onclick="navigateTo('screen-setup-instagram')">Continue</button>
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+
+            <!-- Screen 7b: Instagram Handle -->
+            <div id="screen-setup-instagram" class="screen" style="background: white;">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+                <div class="top-bar">
+                    <button class="back-btn" onclick="navigateTo('screen-setup-platforms')">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="15" y1="9" x2="3" y2="9"></line><polyline points="9 15 3 9 9 3"></polyline></svg>
+                    </button>
+                </div>
+                <div class="content">
+                    <div class="setup-progress">
+                        <div class="progress-segment active"></div>
+                        <div class="progress-segment active"></div>
+                        <div class="progress-segment"></div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 24px;">
+                        <div class="platform-icon icon-instagram" style="width: 24px; height: 24px;"></div>
+                        <span style="font-weight: 600;">Instagram</span>
+                    </div>
+                    <div class="reg-title" style="font-size: 28px; margin-bottom: 32px;">What’s your Instagram handle?</div>
+                    
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 32px;">
+                        <span style="font-size: 32px; color: var(--color-primary-900);">@</span>
+                        <input type="text" class="text-input" value="Hamda.12" style="border: none; padding: 0; font-size: 32px; font-weight: 400; flex: 1;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ADB5BD" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </div>
+
+                    <div class="handle-suggestion">
+                        <div class="avatar-small"></div>
+                        <span style="font-weight: 500;">Hamda.12</span>
+                    </div>
+                    <div class="handle-suggestion">
+                        <div class="avatar-small"></div>
+                        <span style="font-weight: 500;">hamda@</span>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="btn-action-primary" onclick="navigateTo('screen-setup-tiktok')">Next</button>
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+
+            <!-- Screen 7c: TikTok Username -->
+            <div id="screen-setup-tiktok" class="screen" style="background: white;">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+                <div class="top-bar">
+                    <button class="back-btn" onclick="navigateTo('screen-setup-instagram')">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="15" y1="9" x2="3" y2="9"></line><polyline points="9 15 3 9 9 3"></polyline></svg>
+                    </button>
+                </div>
+                <div class="content">
+                    <div class="setup-progress">
+                        <div class="progress-segment active"></div>
+                        <div class="progress-segment active"></div>
+                        <div class="progress-segment active"></div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 24px;">
+                        <div class="platform-icon icon-tiktok" style="width: 24px; height: 24px;"></div>
+                        <span style="font-weight: 600;">TikTok</span>
+                    </div>
+                    <div class="reg-title" style="font-size: 28px; margin-bottom: 32px;">What’s your TikTok username?</div>
+                    
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 32px; justify-content: center; flex-direction: column;">
+                        <div class="avatar-small" style="width: 64px; height: 64px;"></div>
+                        <span style="font-size: 24px; font-weight: 600;">Hamda.12</span>
+                        <div style="width: 32px; height: 32px; background: #e8f5e9; color: #4caf50; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-top: 12px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="btn-action-primary" onclick="navigateTo('screen-setup-success')">Continue</button>
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+
+            <!-- Screen 7d: Setup Success -->
+            <div id="screen-setup-success" class="screen" style="background: white;">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+                <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                    <div style="width: 120px; height: 120px; background: var(--color-primary-50); color: var(--color-primary-500); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 32px;">
+                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+                    </div>
+                    <div class="reg-title">Setup Complete!</div>
+                    <div class="reg-subtitle">You're all set to start exploring campaigns and earning.</div>
+                    <button class="btn-action-primary" style="margin-top: 40px;" onclick="navigateTo('screen-performance')">Go to Dashboard</button>
+                </div>
+            </div>
+
+            <!-- Screen 8: Academy - Exclusive Invitation -->
+            <div id="screen-academy-invite" class="screen academy-theme">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+                
+                <!-- Video Background Placeholder -->
+                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, #1a1a2e 0%, #050505 100%); z-index: 0;">
+                    <div class="glow-orb" style="top: 10%; right: -10%;"></div>
+                    <div class="glow-orb" style="bottom: 10%; left: -10%; background: radial-gradient(circle, rgba(162, 155, 254, 0.1) 0%, transparent 70%);"></div>
+                </div>
+
+                <div class="content" style="display: flex; align-items: center; justify-content: center; z-index: 1;">
+                    <div class="liquid-glass-card" style="text-align: center; animation: fadeIn 1s ease;">
+                        <div style="font-size: 12px; color: var(--color-primary-400); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; font-weight: 600;">Private Invitation</div>
+                        <div class="academy-title" style="margin-bottom: 20px;">Your aesthetic caught our eye.</div>
+                        <div class="academy-subtitle" style="margin-bottom: 32px;">You've been selected for Moontech Academy—an exclusive incubator to elevate your metrics and unlock premium brand partnerships.</div>
+                        <button class="btn-action-primary" style="background: white; color: black; border: none; font-weight: 700;" onclick="navigateTo('screen-academy-dash')">Accept Invitation</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 9: Academy - Incubator Dashboard -->
+            <div id="screen-academy-dash" class="screen academy-theme">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+                <div class="top-bar">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div class="avatar-small" style="background: #222; border: 1px solid rgba(255,255,255,0.1);"></div>
+                        <span style="font-weight: 600; font-size: 14px;">Initiate</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 100px; font-size: 12px; border: 1px solid rgba(255,255,255,0.1);">Level 01</div>
+                </div>
+
+                <div class="content" style="padding-top: 0;">
+                    <div class="status-ring-container">
+                        <div class="glow-orb" style="width: 150px; height: 150px; top: 35px; left: 35px;"></div>
+                        <svg class="status-ring-svg" width="200" height="200" viewBox="0 0 200 200">
+                            <defs>
+                                <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#6c5ce7;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#a29bfe;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="ring-bg" cx="100" cy="100" r="90" />
+                            <circle class="ring-progress" cx="100" cy="100" r="90" />
+                        </svg>
+                        <div style="position: absolute; text-align: center;">
+                            <div style="font-size: 32px; font-weight: 700;">1.2%</div>
+                            <div style="font-size: 12px; opacity: 0.5;">Engagement</div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-bottom: 32px;">
+                        <div style="font-size: 18px; font-weight: 600;">Next Goal: 3.0%</div>
+                        <div style="font-size: 13px; opacity: 0.4; margin-top: 4px;">Target for Brand Access</div>
+                    </div>
+
+                    <div style="margin-bottom: 16px; font-weight: 600; font-size: 18px; padding-left: 20px;">Curriculum</div>
+                    <div style="display: flex; overflow-x: auto; padding-left: 20px; padding-bottom: 20px; scrollbar-width: none;">
+                        <div class="curriculum-card" style="background-image: url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=400&q=80')" onclick="navigateTo('screen-academy-player')">
+                            <div class="card-overlay">
+                                <div style="font-size: 11px; text-transform: uppercase; opacity: 0.7; margin-bottom: 4px;">Calibration</div>
+                                <div style="font-weight: 700; font-size: 16px;">Audience Architecture</div>
+                            </div>
+                        </div>
+                        <div class="curriculum-card" style="background-image: url('https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=400&q=80')">
+                            <div class="card-overlay" style="background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; height: 100%;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 10: Academy - Masterclass Player -->
+            <div id="screen-academy-player" class="screen academy-theme">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+                
+                <!-- Video Player Placeholder -->
+                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; overflow: hidden;">
+                    <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=80" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6;">
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="rgba(255,255,255,0.4)"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    </div>
+                </div>
+
+                <div class="top-bar" style="z-index: 2;">
+                    <button class="back-btn" style="background: rgba(255,255,255,0.1); border: none;" onclick="navigateTo('screen-academy-dash')">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="15" y1="9" x2="3" y2="9"></line><polyline points="9 15 3 9 9 3"></polyline></svg>
+                    </button>
+                    <div style="font-weight: 600; font-size: 14px;">Masterclass 01</div>
+                    <div style="width: 40px;"></div>
+                </div>
+
+                <div class="content" style="justify-content: flex-end; padding-bottom: 100px; z-index: 1;">
+                    <div style="padding: 24px; animation: slideUp 0.5s ease;">
+                        <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">Signal Over Noise</h2>
+                        <p style="font-size: 14px; opacity: 0.8; line-height: 1.4;">How to structure a Deal Broadcaster hook that captures 90% retention in the first 3 seconds.</p>
+                    </div>
+                </div>
+
+                <div class="actions" style="background: transparent; position: relative; z-index: 2;">
+                    <button class="btn-action-primary" style="background: rgba(255,255,255,0.9); color: #000;" onclick="showBrief()">Execute Task</button>
+                    <div class="home-indicator"></div>
+                </div>
+
+                <!-- Step 1: Brief Reveal Overlay -->
+                <div id="academy-brief-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; display: none; align-items: flex-end; padding: 16px;">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px);"></div>
+                    <div class="liquid-glass-card" style="width: 100%; animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); position: relative;">
+                        <div style="font-size: 11px; color: #a29bfe; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px;">Calibration Challenge</div>
+                        <h2 class="academy-title" style="font-size: 24px; margin-bottom: 16px;">Beauty & Lifestyle</h2>
+                        <p class="academy-subtitle" style="margin-bottom: 32px; color: rgba(255,255,255,0.8);">Let’s put the 'Deal Broadcaster' hook into practice. Create a 15-second TikTok ad for <span style="color: white; font-weight: 600;">Aura Skincare</span>. Goal: Hook the viewer in the first 3s and integrate promo code <span style="color: white; font-weight: 600;">AURA20</span>.</p>
+                        <button class="btn-action-primary" style="background: white; color: black; font-weight: 700;" onclick="navigateTo('screen-academy-submit-link')">Accept Challenge</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 11: Academy - Frictionless Submission -->
+            <div id="screen-academy-submit-link" class="screen academy-theme">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+                <div class="top-bar">
+                    <button class="back-btn" style="background: rgba(255,255,255,0.1); border: none;" onclick="navigateTo('screen-academy-player')">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="15" y1="9" x2="3" y2="9"></line><polyline points="9 15 3 9 9 3"></polyline></svg>
+                    </button>
+                    <div style="font-weight: 600; font-size: 14px;">Submission</div>
+                    <div style="width: 40px;"></div>
+                </div>
+                <div class="content">
+                    <div class="reg-header" style="margin-top: 40px;">
+                        <div class="academy-title" style="font-size: 26px; margin-bottom: 12px;">Calibration</div>
+                        <div class="academy-subtitle">Paste your link. Our engine will fetch and analyze the execution automatically.</div>
+                    </div>
+                    
+                    <div class="liquid-glass-card" style="padding: 24px;">
+                        <div style="position: relative; margin-bottom: 12px;">
+                            <input type="text" id="sandbox-url-input" class="text-input" placeholder="Paste TikTok or Reel URL" style="background: transparent; border: none; border-bottom: 1.5px solid rgba(255,255,255,0.1); color: white; width: 100%; font-size: 16px; padding: 12px 0;">
+                            <div style="position: absolute; right: 0; top: 12px; opacity: 0.5;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                            </div>
+                        </div>
+                        <p style="font-size: 12px; opacity: 0.4; line-height: 1.4;">Post this to your private/drafts or public feed. No heavy MP4 uploads required.</p>
+                        <button id="submit-calibration-btn" class="btn-action-primary" style="margin-top: 32px; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.3); pointer-events: none;" onclick="startProcessing()">Submit for Review</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 11b: Academy - Processing -->
+            <div id="screen-academy-processing" class="screen academy-theme">
+                <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                    <div class="scanning-orb"></div>
+                    <div id="processing-status" style="font-size: 18px; font-weight: 600; letter-spacing: 0.5px; transition: all 0.3s ease;">Fetching content...</div>
+                    <div style="margin-top: 16px; width: 40px; height: 2px; background: rgba(255,255,255,0.1); border-radius: 1px; overflow: hidden;">
+                        <div style="width: 100%; height: 100%; background: #a29bfe; animation: shimmer 1s infinite linear;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 11c: Academy - AI Feedback & Progression -->
+            <div id="screen-academy-feedback" class="screen academy-theme">
+                <div class="content" style="padding-top: 60px;">
+                    <div class="liquid-glass-card" style="margin-bottom: 24px; animation: slideUp 0.6s ease;">
+                        <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;">
+                            <div class="feedback-badge success">Hook: Strong</div>
+                            <div class="feedback-badge success">Lighting: Premium</div>
+                            <div class="feedback-badge">CTA: Clear</div>
+                        </div>
+                        <div style="font-size: 18px; font-weight: 700; margin-bottom: 12px;">Calibration Result</div>
+                        <p style="font-size: 15px; line-height: 1.6; color: rgba(255,255,255,0.8); margin-bottom: 0;">Your lighting fits the Visual Curator aesthetic perfectly. Next time, try introducing the promo code one second earlier.</p>
+                    </div>
+
+                    <div style="text-align: center; margin: 40px 0;">
+                        <div class="status-ring-container" style="width: 180px; height: 180px; margin: 0 auto 20px;">
+                            <svg class="status-ring-svg" width="180" height="180" viewBox="0 0 200 200">
+                                <circle class="ring-bg" cx="100" cy="100" r="90" />
+                                <circle id="feedback-ring" class="ring-progress" cx="100" cy="100" r="90" style="stroke-dashoffset: 400;" />
+                            </svg>
+                            <div style="position: absolute;">
+                                <div style="font-size: 28px; font-weight: 800;">1.8%</div>
+                                <div style="font-size: 10px; opacity: 0.5; text-transform: uppercase;">Engagement</div>
+                            </div>
+                        </div>
+                        <div class="academy-title" style="font-size: 22px; margin-bottom: 8px;">Challenge Mastered.</div>
+                        <p class="academy-subtitle">You are one step closer to the Club.</p>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="btn-action-primary" style="background: white; color: black;" onclick="navigateTo('screen-academy-dash')">Return to Dashboard</button>
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+
+            <!-- Screen 13: Velocity - Hook -->
+            <div id="screen-velocity-hook" class="screen academy-theme">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000;">
+                    <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="rgba(255,255,255,0.6)"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    </div>
+                </div>
+                <div class="content" style="justify-content: flex-end; padding-bottom: 120px; z-index: 1;">
+                    <div style="padding: 24px;">
+                        <div class="vip-badge" style="margin-bottom: 16px;">Expert Insight</div>
+                        <h2 style="font-size: 28px; font-weight: 800; line-height: 1.2; margin-bottom: 16px;">Brands don’t just pay for reach; they pay for reliability.</h2>
+                        <p style="font-size: 15px; opacity: 0.8;">Want to double your commission and unlock paid retainers?</p>
+                    </div>
+                </div>
+                <div class="actions" style="background: transparent; position: relative; z-index: 2;">
+                    <button class="btn-action-primary" style="background: white; color: black;" onclick="navigateTo('screen-velocity-breakdown')">Show Me How</button>
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+
+            <!-- Screen 14: Velocity - Breakdown -->
+            <div id="screen-velocity-breakdown" class="screen academy-theme">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+                <div class="content" style="padding-top: 60px;">
+                    <div class="academy-title" style="font-size: 28px; margin-bottom: 24px;">Velocity = Value</div>
+                    <div class="liquid-glass-card" style="margin-bottom: 32px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 14px; opacity: 0.6;">Submission Speed</span>
+                            <span style="color: #a29bfe; font-weight: 700;">Under 48h</span>
+                        </div>
+                        <div class="velocity-chart-line">
+                            <div class="velocity-chart-fill" id="velocity-bar-1"></div>
+                        </div>
+                        <p style="font-size: 14px; line-height: 1.5; opacity: 0.8;">Creators who submit within 48 hours are automatically bumped to the top of brand rosters for guaranteed paid collaborations.</p>
+                    </div>
+                    <div class="liquid-glass-card">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 14px; opacity: 0.6;">Communication</span>
+                            <span style="color: #a29bfe; font-weight: 700;">Under 12h</span>
+                        </div>
+                        <div class="velocity-chart-line">
+                            <div class="velocity-chart-fill" id="velocity-bar-2"></div>
+                        </div>
+                        <p style="font-size: 14px; line-height: 1.5; opacity: 0.8;">Replying to feedback within 12 hours builds the "Creator-CEO" reputation that unlocks the highest tier retainers.</p>
+                    </div>
+                </div>
+                <div class="actions" style="background: transparent;">
+                    <div style="text-align: center; color: rgba(255,255,255,0.4); font-size: 12px; margin-bottom: 12px;">Swipe right to continue</div>
+                    <button class="btn-action-primary" style="background: rgba(255,255,255,0.1); color: white;" onclick="navigateTo('screen-velocity-mechanics')">Next</button>
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+
+            <!-- Screen 15: Velocity - Mechanics -->
+            <div id="screen-velocity-mechanics" class="screen academy-theme">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+                <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <div class="status-ring-container" style="width: 240px; height: 240px; margin-bottom: 40px;">
+                        <div class="glow-orb" style="width: 180px; height: 180px; top: 30px; left: 30px; background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, transparent 70%);"></div>
+                        <svg class="status-ring-svg" width="240" height="240" viewBox="0 0 200 200">
+                            <circle class="ring-bg" cx="100" cy="100" r="90" />
+                            <circle class="ring-progress" cx="100" cy="100" r="90" style="stroke: #d4af37; stroke-dashoffset: 200;" />
+                        </svg>
+                        <div style="position: absolute; text-align: center;">
+                            <div style="font-size: 14px; opacity: 0.6; text-transform: uppercase; letter-spacing: 2px;">Commission</div>
+                            <div style="font-size: 48px; font-weight: 800; color: #d4af37;">15%</div>
+                            <div style="font-size: 12px; opacity: 0.4;">Base: 10%</div>
+                        </div>
+                    </div>
+                    <div class="academy-title" style="font-size: 24px; text-align: center; margin-bottom: 16px;">The Momentum Multiplier</div>
+                    <p style="text-align: center; color: rgba(255,255,255,0.7); line-height: 1.6; padding: 0 20px;">Close your ads on time, reply to brand feedback within 12 hours, and watch your earnings grow automatically.</p>
+                </div>
+                <div class="actions">
+                    <button class="btn-action-primary" style="background: white; color: black;" onclick="navigateTo('screen-velocity-optin')">Continue</button>
+                    <div class="home-indicator"></div>
+                </div>
+            </div>
+
+            <!-- Screen 16: Velocity - Opt-In -->
+            <div id="screen-velocity-optin" class="screen academy-theme">
+                <div class="content" style="display: flex; align-items: center; justify-content: center;">
+                    <div class="black-card-elite" style="text-align: center; border-color: rgba(212, 175, 55, 0.3);">
+                        <div class="shimmer"></div>
+                        <div style="font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #d4af37; margin-bottom: 32px; font-weight: 700;">Exclusive Activation</div>
+                        
+                        <div class="academy-title" style="font-size: 26px; margin-bottom: 16px;">Ready to separate yourself from the amateurs?</div>
+                        <p class="academy-subtitle" style="margin-bottom: 40px;">Opt-in to Velocity Tracking to activate your commission multipliers on your next campaign.</p>
+                        
+                        <button class="btn-action-primary" style="background: #d4af37; color: black; font-weight: 800;" onclick="activateVIP()">Activate Multiplier Status</button>
+                    </div>
+                </div>
+            </div>
+            <div id="screen-academy-success" class="screen academy-theme">
+                <div class="content" style="display: flex; align-items: center; justify-content: center;">
+                    <div class="black-card-elite" style="text-align: center; animation: scaleIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                        <div class="shimmer"></div>
+                        <div style="font-size: 12px; letter-spacing: 3px; text-transform: uppercase; opacity: 0.5; margin-bottom: 32px;">Access Granted</div>
+                        
+                        <div style="position: relative; margin-bottom: 40px;">
+                            <div class="glow-orb" style="width: 120px; height: 120px; top: 50%; left: 50%; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);"></div>
+                            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+                        </div>
+
+                        <div class="academy-title" style="font-size: 24px; margin-bottom: 12px;">The Velvet Rope is Open.</div>
+                        <p class="academy-subtitle" style="margin-bottom: 40px;">Your metrics have reached the Moontech Elite threshold.</p>
+                        
+                        <button class="btn-action-primary" style="background: white; color: black; font-weight: 800;" onclick="navigateTo('screen-campaigns')">Enter The Club</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 5: Waitlist Placeholder -->
+            <div id="screen-waitlist" class="screen" style="background: white;">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <div style="display: flex; gap: 4px;">
+                        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><path d="M14.5 1h-12c-.8 0-1.5.7-1.5 1.5v6c0 .8.7 1.5 1.5 1.5h12c.8 0 1.5-.7 1.5-1.5v-6c0-.8-.7-1.5-1.5-1.5zm0 1v6h-12v-6h12z"/><path d="M16 4h1v3h-1z"/></svg>
+                    </div>
+                </div>
+                <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                    <div style="font-size: 64px; margin-bottom: 24px;">⏳</div>
+                    <h1 style="font-size: 24px; margin-bottom: 16px;">You're on the list!</h1>
+                    <p style="color: #6c757d; margin-bottom: 32px;">We'll notify you as soon as new campaigns matching your profile become available in MoonTech Academy.</p>
+                    <button class="btn-action-primary" style="width: auto; padding: 15px 40px;" onclick="navigateTo('screen-choose-platform')">Back to Home</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function togglePlatform(element) {
+            element.classList.toggle('selected');
+        }
+
+        function activateVIP() {
+            // Trigger success chime and haptic simulation
+            document.getElementById('user-vip-status').style.display = 'inline-flex';
+            document.getElementById('velocity-promo').style.borderColor = '#d4af37';
+            document.getElementById('velocity-promo').style.background = 'linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(10, 10, 10, 0.9) 100%)';
+            
+            navigateTo('screen-campaigns');
+        }
+
+        // Logic to trigger bar animations when breakdown screen is shown
+        function handleSpecialTransitions(screenId) {
+            if (screenId === 'screen-velocity-breakdown') {
+                setTimeout(() => {
+                    document.getElementById('velocity-bar-1').style.width = '90%';
+                    document.getElementById('velocity-bar-2').style.width = '75%';
+                }, 500);
+            }
+        }
+
+        // Potential for multi-screen logic later
+        function navigateTo(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            
+            handleSpecialTransitions(screenId);
+
+            // Ensure modals are closed when navigating
+            document.getElementById('submission-modal').classList.remove('active');
+            
+            // If going to campaigns, show the gate
+            if (screenId === 'screen-campaigns') {
+                document.getElementById('onboarding-gate').classList.add('active');
+            }
+        }
+
+        function processGate(result) {
+            if (result === 'granted') {
+                document.getElementById('onboarding-gate').classList.remove('active');
+            } else {
+                navigateTo('screen-academy-invite');
+            }
+        }
+
+        function simulateFeedback() {
+            const card = document.getElementById('feedback-card');
+            card.style.display = 'block';
+            // In a real app we'd trigger haptics here
+        }
+
+        function showBrief() {
+            document.getElementById('academy-brief-overlay').style.display = 'flex';
+        }
+
+        function startProcessing() {
+            navigateTo('screen-academy-processing');
+            const statuses = ["Fetching content...", "Analyzing hook retention...", "Evaluating brand aesthetic..."];
+            let i = 0;
+            const interval = setInterval(() => {
+                i++;
+                if (i < statuses.length) {
+                    document.getElementById('processing-status').innerText = statuses[i];
+                } else {
+                    clearInterval(interval);
+                    navigateTo('screen-academy-feedback');
+                    setTimeout(() => {
+                        document.getElementById('feedback-ring').style.strokeDashoffset = '320';
+                    }, 500);
+                }
+            }, 1500);
+        }
+
+        function toggleStrategy() {
+            document.getElementById('strategy-panel').classList.toggle('active');
+        }
+
+        // Logic to enable submission button when URL is pasted
+        document.addEventListener('input', (e) => {
+            if (e.target.id === 'sandbox-url-input') {
+                const btn = document.getElementById('submit-calibration-btn');
+                if (e.target.value.length > 5) {
+                    btn.style.background = 'white';
+                    btn.style.color = 'black';
+                    btn.style.pointerEvents = 'auto';
+                } else {
+                    btn.style.background = 'rgba(255,255,255,0.1)';
+                    btn.style.color = 'rgba(255,255,255,0.3)';
+                    btn.style.pointerEvents = 'none';
+                }
+            }
+        });
+
+        function showSubmissionModal() {
+            document.getElementById('submission-modal').classList.add('active');
+        }
+
+        function closeSubmissionModal() {
+            document.getElementById('submission-modal').classList.remove('active');
+        }
+
+        let isVip = false;
+        function activateVIP() {
+            isVip = true;
+            document.getElementById('user-vip-status').style.display = 'inline-flex';
+            document.getElementById('velocity-promo').style.borderColor = '#d4af37';
+            document.getElementById('velocity-promo').style.background = 'linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(10, 10, 10, 0.9) 100%)';
+            navigateTo('screen-campaigns');
+        }
+
+        function switchTab(tab) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const newList = document.getElementById('campaign-list-new');
+            const activeList = document.getElementById('campaign-list-active');
+            
+            // This is a simple toggle for demo purposes
+            if (tab === 'active') {
+                // Ensure active list exists or show empty
+                if (!document.getElementById('campaign-list-active')) {
+                    const div = document.createElement('div');
+                    div.id = 'campaign-list-active';
+                    div.className = 'campaign-list';
+                    div.style.display = 'none';
+                    newList.parentNode.insertBefore(div, newList.nextSibling);
+                }
+                newList.style.display = 'none';
+                document.getElementById('campaign-list-active').style.display = 'block';
+            } else {
+                newList.style.display = 'block';
+                if (document.getElementById('campaign-list-active')) {
+                    document.getElementById('campaign-list-active').style.display = 'none';
+                }
+            }
+        }
+
+        function claimCampaign(btn) {
+            const card = btn.closest('.campaign-card');
+            card.style.opacity = '0';
+            setTimeout(() => {
+                card.style.display = 'none';
+                
+                // Move to active
+                if (!document.getElementById('campaign-list-active')) {
+                    const div = document.createElement('div');
+                    div.id = 'campaign-list-active';
+                    div.className = 'campaign-list';
+                    div.style.display = 'none';
+                    document.getElementById('campaign-list-new').parentNode.insertBefore(div, document.getElementById('campaign-list-new').nextSibling);
+                }
+                
+                const activeCard = document.getElementById('active-campaign-hm').cloneNode(true);
+                activeCard.id = '';
+                activeCard.style.display = 'block';
+                document.getElementById('campaign-list-active').appendChild(activeCard);
+                
+                // Auto-switch to active tab for feedback
+                const activeTabBtn = document.querySelectorAll('.tab-btn')[1];
+                activeTabBtn.click();
+            }, 300);
+        }
+
+        function closeSubmissionModal(event) {
+            document.getElementById('submission-modal').classList.remove('active');
+        }
+
+        function submitAndGoToStats() {
+            // Close modal first
+            document.getElementById('submission-modal').classList.remove('active');
+            // Navigate to performance
+            navigateTo('screen-performance');
+        }
+    </script>
+</body>
+</html>
